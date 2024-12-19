@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="${path}/resources/images/blue.png" type="image/x-icon"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
 	*{
@@ -34,7 +34,7 @@
 	.writer-section{padding-left:40px;padding-right:40px;margin:0;margin-top:4px;}
 	.writer-section>li{margin-bottom:4px;}
 	a{ text-decoration:none; }
-	.dropdown{ overflow:visible;max-height:21px;text-align:right;z-index:10; }
+	.dropdown{ overflow:visible;max-height:24px;text-align:right;z-index:10; }
 	.dropdown>ul{ padding:0;margin:10px 0 0 0;display:flex;flex-direction:column;justify-content:center;background-color:white; }
 	.dropdown li{ padding:2px;text-align:center;width:90px;height:24px; }
 	.dropdownList{ display:none;cursor:pointer; }
