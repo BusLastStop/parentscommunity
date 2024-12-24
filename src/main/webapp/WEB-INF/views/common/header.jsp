@@ -49,24 +49,29 @@
 			<a href="${path}/member/enrollpage.do">회원가입</a>
 		</div>
 	</c:if>
+	
 	<c:if test="${not empty sessionScope.user}">
 		<div id="headerUser">
 			<div class="dropdown">
-				<a href="#" onclick="dropdownList()" id="userMenu">닉네님님</a>
+				<a href="#" onclick="dropdownList()" id="userMenu">닉네임님</a>
 				<ul>
-					<li class="dropdownList" onclick="location.assign('${path}/member/mypage.do')">마이페이지</li>
-					<li class="dropdownList">알림</li>
+					<li class="dropdownList" onclick="location.assign('${path}/mypage.do')">마이페이지</li>
+					<li class="dropdownList" onclick="location.assign('${path}/notification.do')">알림</li>
 				</ul>
 			</div>
 			<a href="${path}/member/logout.do">로그아웃</a>
 		</div>
 	</c:if>
+	
+	
 	<div id="headerMenu">
 		<a href="${path}"><img src="${path}/resources/images/blue.png" width="100" height="60"></a>
-		<h2>교육정보</h2>
+		<h2><a href="${path}/resources/resourceslist.do">교육정보</a></h2>
 		<h2><a href="${path}/post/postlist.do">대학정보 게시판</a></h2>
-		<h2>입시달력</h2>
+		<h2><a href="${path}/calendar.do">입시달력</a></h2>
 	</div>
+	
+	
 	<script>
 		const dropdownList=()=>{
 			document.querySelectorAll(".dropdownList").forEach(v=>{
