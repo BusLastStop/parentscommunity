@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LogoutPageServlet
@@ -26,8 +27,12 @@ public class LogoutPageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().removeAttribute("user");
-		request.getRequestDispatcher("/").forward(request, response);
+		//session객체를 삭제하기
+		HttpSession session = request.getSession(false);
+		if(session!=null) {
+			session.invalidate(); //session객체 삭제
+		}
+		response.sendRedirect(request.getContextPath());
 	}
 
 	/**

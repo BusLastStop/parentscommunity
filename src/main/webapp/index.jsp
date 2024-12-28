@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+
 <section>
 	<div style="display:flex;justify-content:space-around;">
 		<img src="${pageContext.request.contextPath}/resources/images/community.png" width="500" height="500">
