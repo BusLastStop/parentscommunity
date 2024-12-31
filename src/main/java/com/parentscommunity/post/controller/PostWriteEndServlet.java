@@ -94,7 +94,7 @@ public class PostWriteEndServlet extends HttpServlet {
 	                response.sendRedirect(request.getContextPath() + "/post/postlist.do");
 	            } else {
 	                System.err.println("게시글 등록 실패: postService.insertPostWithFile에서 null 반환");
-	                response.sendRedirect(request.getContextPath() + "/error.jsp");
+	                response.sendRedirect(request.getContextPath() + "/common/msg.jsp");
 	            }
 	        } catch (IOException e) {
 	            e.printStackTrace();
