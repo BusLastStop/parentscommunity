@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.parentscommunity.common.SqlSessionTemplate;
 import com.parentscommunity.post.dao.PostDao;
 import com.parentscommunity.post.dao.PostFileDao;
 import com.parentscommunity.post.dto.Post;
@@ -79,5 +80,29 @@ public class PostService {
         return post;
     }
     
+    public boolean deletePost(String postCode) {
+        SqlSession session = getSession();
+        boolean result = false;
+
+        try {
+            int rowsAffected = postDao.deletePost(session, postCode);
+            if (rowsAffected > 0) {
+                session.commit();
+                result = true;
+            } else {
+                session.rollback();
+                throw new RuntimeException("게시글 삭제 실패. 삭제된 행이 없습니다. postCode: " + postCode);
+            }
+        } catch (Exception e) {
+            session.rollback();
+            e.printStackTrace();
+            throw new RuntimeException("게시글 삭제 중 오류 발생: " + e.getMessage(), e);
+        } finally {
+            session.close();
+        }
+
+        return result;
+    }
+
     
 }

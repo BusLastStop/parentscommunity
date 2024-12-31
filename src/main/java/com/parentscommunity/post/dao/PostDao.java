@@ -32,5 +32,9 @@ public class PostDao {
 	    public Post selectPostByCode(SqlSession session, String postCode) {
 	        return session.selectOne("post.selectPostByCode", postCode);
 	    }
+	    
+	    public int deletePost(SqlSession session, String postCode) {
+	        return session.delete("post.deletePost", postCode);
+	    }
 
 }

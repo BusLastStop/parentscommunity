@@ -205,7 +205,12 @@
             <div class="right-side">
                 <button class="report" onclick="alert('신고!')">신고</button>
                 <button onclick="alert('수정!')">수정</button>
-                <button onclick="alert('삭제!')">삭제</button>
+                <!-- 삭제 버튼 -->
+        	<c:if test="${not empty sessionScope.userCode && sessionScope.userCode == post.userCode}">
+            	<button type="button" onclick="location.href='${path}/post/postdelete.do?postCode=${post.postCode}'">삭제</button>
+            	<%-- <c:out value="${post.postCode}" /> --%>
+            	
+        	</c:if>
             </div>
         </div>
     </div>
@@ -298,6 +303,13 @@
 	                $("#userId").focus();
 	            }
 	        });
+	    
+	    function deletePost(postCode) {
+	        if (confirm("정말 삭제하시겠습니까?")) {
+	            location.href = `${path}/post/postdelete.do?postCode=${postCode}`;
+	        }
+	    }
+
 
 
 </script>
