@@ -80,6 +80,7 @@ public class PostService {
         return post;
     }
     
+    //게시판 삭제
     public boolean deletePost(String postCode) {
         SqlSession session = getSession();
         boolean result = false;
@@ -104,5 +105,22 @@ public class PostService {
         return result;
     }
 
-    
+    //게시판 수정
+    public boolean updatePost(Post post) {
+        SqlSession session = getSession();
+        boolean result = false;
+
+        try {
+            result = postDao.updatePost(session, post) > 0;
+            session.commit();
+        } catch (Exception e) {
+            session.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return result;
+    }
+
 }

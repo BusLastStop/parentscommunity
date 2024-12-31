@@ -204,12 +204,14 @@
             </div>
             <div class="right-side">
                 <button class="report" onclick="alert('신고!')">신고</button>
-                <button onclick="alert('수정!')">수정</button>
+                <c:if test="${not empty sessionScope.userCode && sessionScope.userCode == post.userCode}">
+    				<button type="button" onclick="location.href='${path}/post/postUpdate.do?postCode=${post.postCode}'">수정</button>
+				</c:if>
+                
                 <!-- 삭제 버튼 -->
         	<c:if test="${not empty sessionScope.userCode && sessionScope.userCode == post.userCode}">
             	<button type="button" onclick="location.href='${path}/post/postdelete.do?postCode=${post.postCode}'">삭제</button>
-            	<%-- <c:out value="${post.postCode}" /> --%>
-            	
+            	<%-- <c:out value="${post.postCode}" /> --%>   	
         	</c:if>
             </div>
         </div>

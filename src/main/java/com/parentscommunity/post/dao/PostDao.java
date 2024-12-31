@@ -27,14 +27,25 @@ public class PostDao {
 		    return session.update("post.updatePostViews", postCode);
 		}
 
-	 
 	 // 게시글 상세 데이터 가져오기
 	    public Post selectPostByCode(SqlSession session, String postCode) {
 	        return session.selectOne("post.selectPostByCode", postCode);
 	    }
 	    
+	 //게시글 삭제
 	    public int deletePost(SqlSession session, String postCode) {
 	        return session.delete("post.deletePost", postCode);
 	    }
+
+	 //게시글 수정
+	    public int updatePost(SqlSession session, Post post) {
+	    	System.out.println("Post Code: " + post.getPostCode());
+	    	System.out.println("Post Title: " + post.getPostTitle());
+	    	System.out.println("Post Content: " + post.getPostContent());
+	    	System.out.println("Post Category Code: " + post.getPostCategoryCode());
+
+	        return session.update("post.updatePost", post);
+	    }
+
 
 }
