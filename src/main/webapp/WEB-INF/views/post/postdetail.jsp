@@ -174,17 +174,16 @@
 </style>
 <section>
     <div id="board-title">
-        <h2>제목</h2>
-        <div class="details">
-            <p>닉네임</p>
-            <p>2024-12-16</p>
-            <p>조회 0</p>
-            <p>댓글 0</p>
-        </div>
+    <h2>${post.postTitle}</h2>
+    <div class="details">
+        <p>작성자: ${post.userNickname}</p>
+        <p>작성일: ${post.postCreated}</p>
+        <p>조회수: ${post.postViews}</p>
     </div>
+	</div>
     <div class="board-container">
         <div id="post">
-            <pre id="content"></pre>
+            <pre id="content">${post.postContent}</pre>
         </div>
         <div class="attachments">
             <h3>첨부파일</h3>

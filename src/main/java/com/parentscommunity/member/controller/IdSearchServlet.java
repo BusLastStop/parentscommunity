@@ -14,13 +14,13 @@ import com.parentscommunity.member.service.MemberService;
  * Servlet implementation class IdSearcchServlet
  */
 @WebServlet("/member/idsearch.do")
-public class IdSearcchServlet extends HttpServlet {
+public class IdSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IdSearcchServlet() {
+    public IdSearchServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

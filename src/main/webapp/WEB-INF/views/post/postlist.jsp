@@ -33,29 +33,43 @@
 			<option value="category">카테고리</option>
 		</select>
 		<table>
-			<tr>
-				<td class="category">카테고리</td>
-				<td class="title"><a href="${path}/post/postdetail.do">게시글 확인 페이지 들어가기</a></td>
-				<td class="nickname">닉네임</td>
-				<td class="date">날짜</td>
-				<td class="readCount">조회수</td>
-				<td class="commentCount">댓글수</td>
-			</tr>
-			<tr>
-				<td class="category">카테고리</td>
-				<td class="title">제목</td>
-				<td class="nickname">닉네임</td>
-				<td class="date">날짜</td>
-				<td class="readCount">조회수</td>
-				<td class="commentCount">댓글수</td>
-			</tr>
+			<thead>
+				<tr>
+					<th class="category">카테고리</th>
+					<th class="title">제목</th>
+					<th class="nickname">닉네임</th>
+					<th class="date">날짜</th>
+					<th class="readCount">조회수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 게시글 데이터 출력 -->
+				<c:forEach var="post" items="${postList}">
+					<tr>
+						<td class="category">${post.categoryName}</td> <!-- 카테고리 이름 -->
+						<td class="title">
+							<a href="${path}/post/postdetail.do?postCode=${post.postCode}">
+								${post.postTitle}
+							</a>
+						</td>
+						<td class="nickname">${post.userNickname}</td> <!-- 작성자 닉네임 -->
+						<td>${post.postCreated}</td>
+						<td class="readCount">${post.postViews}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
 		</table>
 	</div>
 	<div class="board-container">
 		<div id="write">
-			<button type="button" onclick="location.href='${path}/post/postwrite.do'">글쓰기</button>
+			<c:if test="${not empty sessionScope.userCode}">
+				<button type="button" onclick="location.href='${path}/post/postwrite.do'">글쓰기</button>
+			</c:if>
+			<c:if test="${empty sessionScope.userCode}">
+				<button type="button" onclick="alert('로그인 후 글쓰기가 가능합니다.');">글쓰기</button>
+			</c:if>
 		</div>
-		<p id="pagination">페이지네이션 공간 만들기</p>
+		<p id="pagination">${pageBar}</p> <!-- 페이지네이션 -->
 		<div id="search">
 			<select>
 				<option>게시글 제목</option>
@@ -65,4 +79,5 @@
 		</div>
 	</div>
 </section>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

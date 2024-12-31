@@ -1,4 +1,4 @@
-package com.parentscommuntiy.post.controller;
+package com.parentscommunity.post.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class PostCommentInsrtServlet
+ * Servlet implementation class PostWriteServlet
  */
-@WebServlet("/post/postcommentinsert.do")
-public class PostCommentInsrtServlet extends HttpServlet {
+@WebServlet("/post/postwrite.do")
+public class PostWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostCommentInsrtServlet() {
+    public PostWriteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,6 +27,8 @@ public class PostCommentInsrtServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		request.getRequestDispatcher(getServletContext().getInitParameter("viewpath")+"/post/postwrite.jsp")
+		.forward(request, response);
 	}
 
 	/**

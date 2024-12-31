@@ -56,20 +56,22 @@ public class LoginServlet extends HttpServlet {
 //		System.out.println("입력된 password: " + password);
 
 		// 사용자 인증
-		Member m = new MemberService().selectMemberById(userId);
-		if (m != null && m.getUserPw().equals(password)) {
-		    // 로그인 성공
-		    HttpSession session = request.getSession();
-		    session.setAttribute("loginMember", m);
-		    response.sendRedirect(request.getContextPath());
-		} else {
-		    // 로그인 실패
-		    request.setAttribute("msg", "아이디와 패스워드가 일치하지 않습니다.");
-		    request.setAttribute("loc", "/");
-		    request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-		}
+        MemberService memberService = new MemberService();
+        Member user = memberService.selectMemberById(userId); // DB에서 사용자 정보 조회
 
-		}
+        if (user != null && user.getUserPw().equals(password)) {
+            // 로그인 성공
+            HttpSession session = request.getSession();
+            session.setAttribute("loginMember", user); // 로그인 정보 저장
+            session.setAttribute("userCode", user.getUserCode()); // 사용자 코드 저장
+            session.setAttribute("userName", user.getUserName()); // 사용자 이름 저장
+            response.sendRedirect(request.getContextPath());        } else {
+            // 로그인 실패
+            request.setAttribute("msg", "아이디와 패스워드가 일치하지 않습니다.");
+            request.setAttribute("loc", "/");
+            request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+        }
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

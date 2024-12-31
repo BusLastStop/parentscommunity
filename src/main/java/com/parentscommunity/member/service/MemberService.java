@@ -71,6 +71,12 @@ public class MemberService {
 	   SqlSession session = getSession();
 	   return dao.findUserId(session, userName, birth, phone);
    }
+   
+   //pw 찾기
+   public String findUserPw(String userId, String userName, String birth, String phone) {
+	   SqlSession session = getSession();
+	   return dao.findUserPw(session, userId, userName, birth, phone);
+   }
     
 
     // 회원 정보 수정

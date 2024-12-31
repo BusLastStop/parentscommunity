@@ -1,73 +1,78 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>비밀번호 재설정</title>
+<title>비밀번호 찾기</title>
 <style>
     body {
-        font-family: Arial, sans-serif;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
+        overflow: hidden;
         margin: 0;
-        background-color: #f5f5f5;
     }
-    #reset-container {
-        width: 400px;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
-    }
-    #reset-container h1 {
-        font-size: 20px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    #reset-container form {
+    #find-password-container {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 40%;
+        height: 100vh;
+        min-width: 500px;
+        background-color: #E3F2FD;
     }
-    #reset-container form input {
-        margin-bottom: 15px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+    #find-password-form {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
     }
-    #reset-container form button {
-        padding: 10px;
-        background-color: #007BFF;
-        color: white;
+    #find-password-form p {
+        padding: 0;
+        margin: 0;
+        margin-bottom: 3px;
+    }
+    #find-password-form input {
+        margin-bottom: 5px;
+        height: 30px;
+        border: 1px solid #BBDEFB;
+    }
+    #find-password-form button {
+        height: 35px;
+        background-color: #90CAF9;
         border: none;
-        border-radius: 5px;
         cursor: pointer;
+        color: white;
+        font-weight: bold;
     }
-    #reset-container form button:hover {
-        background-color: #0056b3;
+    #find-password-form button:hover {
+        background-color: #64B5F6;
     }
 </style>
 </head>
 <body>
-	<div id="reset-container">
-		<h1>비밀번호 재설정</h1>
-		<form action="resetPassword" method="post">
-			<p>아이디</p>
-			<input type="text" name="userId" required> 
-			
-			<p>이름</p>
-			<input type="text" name="userName" required>
-			
-			<p>생년월일</p>
-			<input type="data" name="birthDate" requried>
-			
-			<p>전화번호</p>
-			<input type="text" name="phone" required>
-			<button type="submit">비밀번호 재설정</button>
-		</form>
-	</div>
+    <div id="find-password-container">
+        <h1>비밀번호 찾기</h1>
+        <form id="find-password-form" action="${path}/member/pwsearchresult.do" method="post" target="_blank">
+            <p>아이디</p>
+            <input type="text" name="userId" required>
+
+            <p>이름</p>
+            <input type="text" name="userName" required>
+
+            <p>생년월일</p>
+            <input type="date" name="birth" required>
+
+            <p>전화번호</p>
+            <input type="text" name="phone" placeholder="예: 01012345678" required>
+
+            <button type="submit">비밀번호 찾기</button>
+        </form>
+    </div>
 </body>
 </html>

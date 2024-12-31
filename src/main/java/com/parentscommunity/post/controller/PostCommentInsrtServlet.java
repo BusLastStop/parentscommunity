@@ -1,4 +1,4 @@
-package com.parentscommuntiy.post.controller;
+package com.parentscommunity.post.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class PostDetailServlet
+ * Servlet implementation class PostCommentInsrtServlet
  */
-@WebServlet("/post/postdetail.do")
-public class PostDetailServlet extends HttpServlet {
+@WebServlet("/post/postcommentinsert.do")
+public class PostCommentInsrtServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostDetailServlet() {
+    public PostCommentInsrtServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,8 +26,7 @@ public class PostDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 페이지 확인 링크 연결(DB 생성 후 수정하기)
-		request.getRequestDispatcher("/WEB-INF/views/post/postdetail.jsp").forward(request, response);
+		
 	}
 
 	/**

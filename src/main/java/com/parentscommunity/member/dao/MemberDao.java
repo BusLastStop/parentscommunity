@@ -52,7 +52,15 @@ public class MemberDao {
             "phone", phone
         ));
     }
-
+    
+    public String findUserPw(SqlSession session, String userId, String userName, String birth, String phone) {
+    	return session.selectOne("member.findUserPw", Map.of(
+    			"userId", userId,
+    			"userName", userName,
+    			"birth", birth,
+    			"phone", phone
+    			));
+    }
 
     public int updateMember(SqlSession session, Member m) {
         return session.update("member.updateMember", m);
