@@ -49,21 +49,14 @@ public class PostService {
     }
     
     //게시판 목록
-    public List<Post> selectPostList(Map<String, Integer> param) {
+    public List<Post> selectPostList(Map<String, Object> param) {
     	SqlSession session = SqlSessionTemplate.getSession();
 		List<Post> result = postDao.selectPostList(session,param);
 		session.close();
-		
-		
 //	    System.out.println("Post List in Service: " + result);
 		return result; 
 		}
-//    public List<Post> selectPostList(Map<String, Integer> param){
-//		SqlSession session = getSession();
-//		List<Post> result = PostDao.selectPostList2(session,param);
-//		session.close();
-//		return result;
-//	}
+
     
     public int selectPostCount() {
 		SqlSession session = getSession();

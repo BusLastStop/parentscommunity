@@ -14,20 +14,21 @@ public class PostDao {
         return session.insert("post.insertPost", post);
     }
 	
-	// 게시글 전체 조회 (페이징 없이)
-//	 public List<Post> selectPostList() {
-//	        SqlSession session = SqlSessionTemplate.getSession();
-//	        List<Post> postList = session.selectList("post.selectPostList");
-//	        session.close();
-//	        return postList;
-//	    }
 	
-	public List<Post> selectPostList(SqlSession session, Map<String, Integer> param) {
-	    int cPage = param.get("cPage");
-	    int numPerPage = param.get("numPerPage");
-	    RowBounds rb = new RowBounds((cPage - 1) * numPerPage, numPerPage);
+	public List<Post> selectPostList(SqlSession session, Map<String, Object> param) {
+	    int cPage = (int)param.get("cPage");  //현재 페이지
+	    int numPerPage = (int)param.get("numPerPage"); //페이지당 게시글 수 
+	    //RowBounds는 MyBatis에서 페이징 처리를 간단히 구현하는 도구
+	    //RowBounds(int offset, int limit) => offset은 결과 집합의 시작 위치(몇 번째 행부터 가져올지), limit는 가져올 데이터의 최대 개수.
 
-	    List<Post> postList = session.selectList("post.selectPostList", null, rb);
+	    RowBounds rb = new RowBounds((cPage - 1) * numPerPage, numPerPage);
+	    
+//	    System.out.println("DAO Param: " + param);
+	    
+	    
+	    //쿼리 필터조건에 사용할 매개변수가 필요하지 않으므로 null사용
+	    //rb를 사용해서 SQL을 변경하지 않고 메모리에서 페이징 처리 수
+	    List<Post> postList = session.selectList("post.selectPostList", param, rb);
 //	    System.out.println("Post List in DAO: " + postList);
 	    return postList;
 	}
@@ -60,23 +61,11 @@ public class PostDao {
 	        return session.update("post.updatePost", post);
 	    }
 	    
+	    //게시글 목록에서 게시글 개수
 	    public int selectPostCount(SqlSession session) {
 			return session.selectOne("post.selectPostCount");
 		}
 
-//	    
-//	    public List<Post> selectPostList2(SqlSession session,
-//				Map<String, Integer> param){
-//			//RowBounds클래스 이용해서 페이징처리하기
-//			//RowBoudns클래스를 생성할 때 두개의 매개변수를 전달
-//			//1(int) : 시작 row번호 -> (cPage-1)*numPerPage
-//			//2(int) :	범위 -> numPerPage
-//			int cPage= param.get("cPage");
-//			int numPerPage = param.get("numPerPage");
-//			
-//			RowBounds rb = new RowBounds((cPage-1)*numPerPage,numPerPage);
-//			return session.selectList("post.selectPostList2", null, rb);
-//			
-//		}
+
 
 }

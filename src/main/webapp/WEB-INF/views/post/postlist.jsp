@@ -91,6 +91,7 @@
 						<td class="readCount">${post.postViews}</td>
 					</tr>
 				</c:forEach>
+				
 			</tbody>
 		</table>
 	</div>
@@ -110,11 +111,13 @@
         </div>
 
 		<div id="search">
-			<select>
+			<form action="${path}/post/postlist.do" method="get">
+			<select name="searchType">
 				<option>게시글 제목</option>
 			</select>
-			<input type="text" placeholder="검색어를 입력하세요">
+			<input type="text" name="searchKeyword" placeholder="검색어를 입력하세요">
 			<button type="submit">검색</button>
+			</form>
 		</div>
 	</div>
 </section>

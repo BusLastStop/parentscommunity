@@ -1,6 +1,7 @@
 package com.parentscommunity.post.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,25 +33,10 @@ public class PostListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		String postCode = request.getParameter("postCode");
-//		
-//		PostService postService = new PostService(); // PostService 객체 생성
-//
-//        // 조회수 증가 처리
-//        if (postCode != null) {
-//            postService.increasePostView(postCode); 
-//        }
-//		
-//        // 전체 게시글 데이터 가져오기
-//	    List<Post> postList = postService.getPostList(); // 메서드 호출
-//
-//
-//	    request.setAttribute("postList", postList);
-//	    
-//	    
-//	        // JSP로 포워딩
-//		request.getRequestDispatcher("/WEB-INF/views/post/postlist.jsp").forward(request, response);
-	
+		
+		String searchKeyword = request.getParameter("searchKeyword");
+	    String searchType = request.getParameter("searchType");
+	    
 		// 현재 페이지와 페이지당 게시글 수 가져오기
         int cPage, numPerPage;
         try {
@@ -64,6 +50,7 @@ public class PostListServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             numPerPage = 5; // 기본값 설정
         }
+        
 
         // 서비스 호출
         PostService postService = new PostService();
@@ -75,11 +62,24 @@ public class PostListServlet extends HttpServlet {
         }
 
         // 페이징 데이터를 가져오기
-        Map<String, Integer> param = Map.of("cPage", cPage, "numPerPage", numPerPage);
+        Map<String, Object> param = new HashMap<>();
+        param.put("cPage", cPage);
+        param.put("numPerPage", numPerPage);
+        
+//        System.out.println("Search Type: " + searchType);
+//        System.out.println("Search Keyword: " + searchKeyword);
+
+        
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            param.put("searchType", searchType); // 제목 검색
+            param.put("searchKeyword", searchKeyword); // 검색 키워드
+        }
         List<Post> postList = postService.selectPostList(param);
 
         // 전체 데이터 수 및 페이징 처리
         int totalData = postService.selectPostCount();
+        
+        //Math.ceil()은 소수점을 올림하여 정수로 맞추는 데 사용
         int totalPage = (int) Math.ceil((double) totalData / numPerPage);
         int pageBarSize = 5;
         int pageNo = ((cPage - 1) / pageBarSize) * pageBarSize + 1;
