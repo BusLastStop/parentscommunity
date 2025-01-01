@@ -36,6 +36,7 @@ public class PostListServlet extends HttpServlet {
 		
 		String searchKeyword = request.getParameter("searchKeyword");
 	    String searchType = request.getParameter("searchType");
+        String category = request.getParameter("category");
 	    
 		// 현재 페이지와 페이지당 게시글 수 가져오기
         int cPage, numPerPage;
@@ -60,6 +61,12 @@ public class PostListServlet extends HttpServlet {
         if (postCode != null) {
             postService.increasePostView(postCode);
         }
+        
+        // 검색 조건이 없으면 전체 목록을 보여줌
+        if (searchType == null || searchKeyword == null || searchKeyword.trim().isEmpty()) {
+            searchType = null; // 검색 유형 초기화
+            searchKeyword = null; // 검색 키워드 초기화
+        }
 
         // 페이징 데이터를 가져오기
         Map<String, Object> param = new HashMap<>();
@@ -70,10 +77,16 @@ public class PostListServlet extends HttpServlet {
 //        System.out.println("Search Keyword: " + searchKeyword);
 
         
-        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-            param.put("searchType", searchType); // 제목 검색
-            param.put("searchKeyword", searchKeyword); // 검색 키워드
+        if (searchType != null && !searchType.isEmpty()) {
+            param.put("searchType", searchType); //제목검색
         }
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            param.put("searchKeyword", searchKeyword); //키워드
+        }
+        if (category != null && !category.isEmpty()) {
+            param.put("category", category);
+        }
+        
         List<Post> postList = postService.selectPostList(param);
 
         // 전체 데이터 수 및 페이징 처리
@@ -144,6 +157,9 @@ public class PostListServlet extends HttpServlet {
         request.setAttribute("pageBar", pageBar.toString());
         request.setAttribute("totalData", totalData);
         request.setAttribute("currentPage", cPage);
+        request.setAttribute("searchType", searchType);
+        request.setAttribute("searchKeyword", searchKeyword);
+        request.setAttribute("category", category);
 
         // JSP로 포워딩
         request.getRequestDispatcher("/WEB-INF/views/post/postlist.jsp").forward(request, response);

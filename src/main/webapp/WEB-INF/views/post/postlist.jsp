@@ -63,9 +63,21 @@
 <section>
 	<div id="boardList">
 		<h2>전체 글보기</h2><br>
-		<select id="board-category">
-			<option value="category">카테고리</option>
-		</select>
+		<form action="${path}/post/postlist.do" method="get" id="categoryForm">
+    <select id="board-category" name="category" onchange="document.getElementById('categoryForm').submit()">
+        <option value="" ${category == null || category == '' ? 'selected' : ''}>카테고리</option>
+        <option value="CAT001" ${category == 'CAT001' ? 'selected' : ''}>입시정보</option>
+        <option value="CAT002" ${category == 'CAT002' ? 'selected' : ''}>학교생활</option>
+        <option value="CAT003" ${category == 'CAT003' ? 'selected' : ''}>공부법</option>
+        <option value="CAT004" ${category == 'CAT004' ? 'selected' : ''}>자녀 고민상담</option>
+        <option value="CAT005" ${category == 'CAT005' ? 'selected' : ''}>자유</option>
+        <option value="CAT006" ${category == 'CAT006' ? 'selected' : ''}>익명</option>
+        <option value="CAT007" ${category == 'CAT007' ? 'selected' : ''}>홍보</option>
+    </select>
+</form>
+		
+		
+		
 		<table>
 			<thead>
 				<tr>
@@ -113,9 +125,10 @@
 		<div id="search">
 			<form action="${path}/post/postlist.do" method="get">
 			<select name="searchType">
-				<option>게시글 제목</option>
+				 <option value="게시글 제목" ${searchType == '게시글 제목' ? 'selected' : ''}>게시글 제목</option>
+            	<option value="작성자" ${searchType == '작성자' ? 'selected' : ''}>작성자</option>
 			</select>
-			<input type="text" name="searchKeyword" placeholder="검색어를 입력하세요">
+			<input type="text" name="searchKeyword" value="${searchKeyword != null ? searchKeyword : ''}" placeholder="검색어를 입력하세요">
 			<button type="submit">검색</button>
 			</form>
 		</div>
