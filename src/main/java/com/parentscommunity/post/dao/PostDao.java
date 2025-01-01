@@ -32,17 +32,17 @@ public class PostDao {
 	        return session.selectOne("post.selectPostByCode", postCode);
 	    }
 	    
-	 //게시글 삭제
+	 //게시글 삭제 => 삭제된 행의 개수를 반환
 	    public int deletePost(SqlSession session, String postCode) {
 	        return session.delete("post.deletePost", postCode);
 	    }
 
-	 //게시글 수정
+	 //게시글 수정 => 업데이트된 행의 개수 반환
 	    public int updatePost(SqlSession session, Post post) {
-	    	System.out.println("Post Code: " + post.getPostCode());
-	    	System.out.println("Post Title: " + post.getPostTitle());
-	    	System.out.println("Post Content: " + post.getPostContent());
-	    	System.out.println("Post Category Code: " + post.getPostCategoryCode());
+//	    	System.out.println("Post Code: " + post.getPostCode());
+//	    	System.out.println("Post Title: " + post.getPostTitle());
+//	    	System.out.println("Post Content: " + post.getPostContent());
+//	    	System.out.println("Post Category Code: " + post.getPostCategoryCode());
 
 	        return session.update("post.updatePost", post);
 	    }

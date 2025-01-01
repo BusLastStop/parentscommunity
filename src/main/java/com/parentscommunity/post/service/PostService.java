@@ -86,7 +86,7 @@ public class PostService {
         boolean result = false;
 
         try {
-            int rowsAffected = postDao.deletePost(session, postCode);
+            int rowsAffected = postDao.deletePost(session, postCode); //삭제된 행의 개수
             if (rowsAffected > 0) {
                 session.commit();
                 result = true;

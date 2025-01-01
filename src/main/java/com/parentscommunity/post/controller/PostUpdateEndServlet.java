@@ -38,11 +38,11 @@ public class PostUpdateEndServlet extends HttpServlet {
             String postTitle = request.getParameter("title");
             String postCategory = request.getParameter("category");
             String postContent = request.getParameter("content");
-            
-            System.out.println("postCode: " + postCode);
-            System.out.println("title: " + postTitle);
-            System.out.println("category: " + postCategory);
-            System.out.println("content: " + postContent);
+//            
+//            System.out.println("postCode: " + postCode);
+//            System.out.println("title: " + postTitle);
+//            System.out.println("category: " + postCategory);
+//            System.out.println("content: " + postContent);
 
 
             if (postCode == null || postTitle == null || postCategory == null || postContent == null) {

@@ -34,7 +34,7 @@ public class PostUpdateServlet extends HttpServlet {
 
         // postCode 가져오기
         String postCode = request.getParameter("postCode");
-        System.out.println("postCode: " + postCode);
+        //System.out.println("postCode: " + postCode);
         if (postCode == null || postCode.isEmpty()) {
             throw new RuntimeException("수정할 게시글 코드가 없습니다.");
         }

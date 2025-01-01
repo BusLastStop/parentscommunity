@@ -31,6 +31,7 @@ public class PostDeleteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 String postCode = request.getParameter("postCode");
 		 
+		 //postCode.trim().isEmpty()는 postCode가 공백 문자로만 이루어져 있는 경우도 "비어 있음"으로 간주
 		 if (postCode == null || postCode.trim().isEmpty()) {
 		        throw new ServletException("삭제하려는 게시글의 코드가 전달되지 않았습니다.");
 		    }
