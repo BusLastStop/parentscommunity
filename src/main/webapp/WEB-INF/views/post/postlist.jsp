@@ -25,6 +25,40 @@
 	#pagination{ height:25px; }
 	p{ margin:0;text-align:center; }
 	button{ background-color:#bbdefb;height:25px; }
+	/*페이지바*/
+	#pagination {
+    display: flex; /* 가로 정렬 */
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;
+    list-style: none; /* 불필요한 리스트 스타일 제거 */
+    padding: 0;
+    margin-top: 10px;
+}
+
+#pagination li {
+    margin: 0 5px; /* 각 페이지 간격 */
+}
+
+#pagination a {
+    text-decoration: none;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+#pagination a:hover {
+    background-color: #64b5f6;
+    color: white;
+}
+
+#pagination .active {
+    background-color: #0066ff;
+    color: white;
+    pointer-events: none; /* 클릭 비활성화 */
+}
 </style>
 <section>
 	<div id="boardList">
@@ -69,7 +103,12 @@
 				<button type="button" onclick="alert('로그인 후 글쓰기가 가능합니다.');">글쓰기</button>
 			</c:if>
 		</div>
-		<p id="pagination">${pageBar}</p> <!-- 페이지네이션 -->
+		
+		<!-- 페이지네이션 -->
+		 <div id="pagination">
+            ${pageBar}
+        </div>
+
 		<div id="search">
 			<select>
 				<option>게시글 제목</option>

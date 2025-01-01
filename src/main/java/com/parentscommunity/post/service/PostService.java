@@ -3,6 +3,7 @@ package com.parentscommunity.post.service;
 import static com.parentscommunity.common.SqlSessionTemplate.getSession;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -48,10 +49,28 @@ public class PostService {
     }
     
     //게시판 목록
-    public List<Post> getPostList() {
-        return postDao.selectPostList(); // List<Post> 반환
-    }
+    public List<Post> selectPostList(Map<String, Integer> param) {
+    	SqlSession session = SqlSessionTemplate.getSession();
+		List<Post> result = postDao.selectPostList(session,param);
+		session.close();
+		
+		
+//	    System.out.println("Post List in Service: " + result);
+		return result; 
+		}
+//    public List<Post> selectPostList(Map<String, Integer> param){
+//		SqlSession session = getSession();
+//		List<Post> result = PostDao.selectPostList2(session,param);
+//		session.close();
+//		return result;
+//	}
     
+    public int selectPostCount() {
+		SqlSession session = getSession();
+		int count = postDao.selectPostCount(session);
+		session.close();
+		return count;
+	}
     
     //조회수
     public void increasePostView(String postCode) {
@@ -122,5 +141,8 @@ public class PostService {
 
         return result;
     }
+    
+
+	
 
 }
