@@ -117,14 +117,21 @@ public class PostService {
         return result;
     }
 
-    //게시판 수정
+ // 게시판 수정 
     public boolean updatePost(Post post) {
         SqlSession session = getSession();
         boolean result = false;
 
         try {
-            result = postDao.updatePost(session, post) > 0;
-            session.commit();
+            // 게시글 업데이트
+            int postUpdateResult = postDao.updatePost(session, post);
+
+            if (postUpdateResult > 0) {
+                session.commit();
+                result = true;
+            } else {
+                session.rollback();
+            }
         } catch (Exception e) {
             session.rollback();
             e.printStackTrace();
@@ -134,6 +141,7 @@ public class PostService {
 
         return result;
     }
+
     
 
 	

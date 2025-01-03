@@ -1,6 +1,7 @@
 package com.parentscommunity.post.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.parentscommunity.post.dto.Post;
+import com.parentscommunity.post.dto.PostFile;
+import com.parentscommunity.post.service.PostFileService;
 import com.parentscommunity.post.service.PostService;
 
 /**
@@ -36,6 +39,11 @@ public class PostDetailServlet extends HttpServlet {
         // PostService를 통해 조회수 증가
         PostService postService = new PostService();
         postService.increasePostView(postCode);
+        
+        PostFileService postFileService = new PostFileService();
+        List<PostFile> files = postFileService.getPostFiles(postCode);
+        request.setAttribute("files", files);
+
 
         // 게시글 데이터 가져오기
         Post post = postService.getPostByCode(postCode);

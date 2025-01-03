@@ -15,4 +15,5 @@ public class PostFile {
     private String postCode;         // 게시글 코드 (FK)
     private String originalFileName; // 업로드된 파일 이름
     private String renamedFileName;  // 서버에 저장된 파일 이름
+    private String fileStatus;
 }

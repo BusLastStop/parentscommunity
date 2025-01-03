@@ -6,8 +6,8 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
-import com.parentscommunity.common.SqlSessionTemplate;
 import com.parentscommunity.post.dto.Post;
+import com.parentscommunity.post.dto.PostFile;
 
 public class PostDao {
 	public int insertPost(SqlSession session, Post post) {
@@ -65,7 +65,6 @@ public class PostDao {
 	    public int selectPostCount(SqlSession session) {
 			return session.selectOne("post.selectPostCount");
 		}
-
-
+	    
 
 }

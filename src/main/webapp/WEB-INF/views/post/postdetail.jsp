@@ -186,12 +186,15 @@
             <pre id="content">${post.postContent}</pre>
         </div>
         <div class="attachments">
-            <h3>첨부파일</h3>
-            <ul id="attachmentList">
-                <li><a href="#">첨부파일1.pdf</a></li>
-                <li><a href="#">첨부파일2.jpg</a></li>
-            </ul>
-        </div>
+		    <h3>첨부파일</h3>
+		    <ul id="attachmentList">
+		        <c:forEach var="file" items="${files}">
+		            <li><a href="${path}/post/filedownload.do?originalFileName=${file.originalFileName}&renamedFileName=${file.renamedFileName}" target="_blank">
+		            ${file.originalFileName}</a></li>
+		        </c:forEach>
+		    </ul>
+		</div>
+        
         <div id="buttons">
             <div class="left-side">
                 <button onclick="location.assign('${pageContext.request.contextPath}/post/postlist.do')">목록</button>

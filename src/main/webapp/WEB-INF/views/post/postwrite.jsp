@@ -156,10 +156,10 @@ header, footer {
 			<textarea id="content" name="content" maxlength="10000" placeholder="내용을 입력하세요" requried></textarea>
 		</div>
 		
-		<div>
-			<label for="file">첨부파일</label>
-			<input type="file" id="file" name="file" multiple>
-		</div>
+		 <div class="form-group">
+        <label for="file">첨부파일</label>
+        <input type="file" id="file" name="files" multiple>
+    	</div>
 		
 		<div class="form-actions">
 			<button type="submit" class="btn-submit">등록</button>
