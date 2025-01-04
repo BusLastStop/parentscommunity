@@ -2,7 +2,6 @@ package com.parentscommunity.post.service;
 
 import static com.parentscommunity.common.SqlSessionTemplate.getSession;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
@@ -161,13 +160,14 @@ public class PostService {
         return result;
     }
 	
-    // 댓글 목록 조회
-    public List<PostComment> selectCommentsByPostCode(String postCode) {
-        SqlSession session = getSession();
-        List<PostComment> comments = postDao.selectCommentsByPostCode(session, postCode);
+    // 댓글 목록 조회 (페이지네이션 지원)
+    public List<PostComment> selectCommentsByPostCode(Map<String, Object> param) {
+    	SqlSession session = getSession();
+        List<PostComment> comments = postDao.selectCommentsByPostCode(session, param);
         session.close();
         return comments;
     }
+
 
     //댓글 삭제
     public int deleteComment(String comCode) {
@@ -181,5 +181,14 @@ public class PostService {
         session.close();
         return result;
     }
+
+    //전체 댓글 수
+    public int getCommentCount(String postCode) {
+        SqlSession session = getSession();
+        int count = postDao.getCommentCount(session, postCode);
+        session.close();
+        return count;
+    }
+
 
 }

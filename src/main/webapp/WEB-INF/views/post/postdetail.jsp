@@ -4,6 +4,9 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 <style>
     section {
         display: flex;
@@ -278,7 +281,46 @@
         </c:forEach>
     </c:if>
 </table>
-    	
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+  	<!-- 이전 페이지 버튼 -->
+  	<c:if test="${currentPage > 1}">
+	    <li class="page-item">
+	      <a class="page-link" href="${path}/post/postdetail.do?postCode=${post.postCode}&cPage=${pageNo}" aria-label="Previous">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+    </c:if>
+    
+    <!-- 페이지 번호 -->
+    <c:forEach begin="1" end="${totalPages}" var="pageNo">
+      <li class="page-item ${pageNo == currentPage ? 'active' : ''}">
+        <a class="page-link" href="${path}/post/postdetail.do?postCode=${post.postCode}&cPage=${pageNo}">${pageNo}</a>
+      </li>
+    </c:forEach>
+    
+    <!-- 다음 페이지 버튼 -->
+    <c:if test="${currentPage < totalPages}">
+      <li class="page-item">
+        <a class="page-link" href="${path}/post/postdetail.do?postCode=${post.postCode}&cPage=${pageNo}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </c:if>
+    
+   <!--  <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">4</a></li>
+    <li class="page-item"><a class="page-link" href="#">5</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li> -->
+  </ul>
+</nav>
     </div>
 </section>
 

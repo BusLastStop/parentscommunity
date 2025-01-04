@@ -1,5 +1,6 @@
 package com.parentscommunity.post.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,15 +72,32 @@ public class PostDao {
 	        return sqlSession.insert("post.insertComment", comment);
 	    }
 	    
-	    // 댓글 목록 조회
-	    public List<PostComment> selectCommentsByPostCode(SqlSession session, String postCode) {
-	        return session.selectList("post.selectCommentsByPostCode", postCode);
+	    // 댓글 목록 조회 (페이지네이션 지원)
+	    public List<PostComment> selectCommentsByPostCode(SqlSession session, Map<String, Object> param) {
+	    	int cPage = (int) param.get("cPage");  // 현재 페이지
+	        int numPerPage = (int) param.get("numPerPage");  // 페이지당 댓글 수
+
+	        // RowBounds를 사용하여 페이징 처리
+	        RowBounds rb = new RowBounds((cPage - 1) * numPerPage, numPerPage);
+
+	        // 페이징 조건으로 댓글 리스트를 가져옴
+	        return session.selectList("post.selectCommentsByPostCode", param, rb);
 	    }
+
 	    
 	    //댓글 삭제
 	    public int deleteComment(SqlSession session, String comCode) {
 	        return session.delete("post.deleteComment", comCode);
 	    }
+	    
+	    //댓글 개수
+	    public int getCommentCount(SqlSession session, String postCode) {
+	        return session.selectOne("post.getCommentCount", postCode);
+	    }
+	    
+
+
+
 
 	    
 }

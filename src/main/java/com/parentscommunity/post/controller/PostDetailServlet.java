@@ -1,7 +1,9 @@
 package com.parentscommunity.post.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,6 +38,15 @@ public class PostDetailServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 요청 파라미터 추출 => 게시글 코드 가져오기
         String postCode = request.getParameter("postCode");
+        int cPage;
+        try {
+            String cPageStr = request.getParameter("cPage");
+            cPage = (cPageStr == null || cPageStr.isEmpty()) ? 1 : Integer.parseInt(cPageStr);
+        } catch (NumberFormatException e) {
+            cPage = 1; // 기본값 설정
+        }
+        
+        int numPerPage = 5;  // 페이지당 댓글 수
 
         // PostService를 통해 조회수 증가
         PostService postService = new PostService();
@@ -46,12 +57,20 @@ public class PostDetailServlet extends HttpServlet {
         List<PostFile> files = postFileService.getPostFiles(postCode);
         request.setAttribute("files", files);
 
-
         // 게시글 데이터 가져오기
         Post post = postService.getPostByCode(postCode);
         
-        // 댓글 데이터 가져오기
-        List<PostComment> comments = postService.selectCommentsByPostCode(postCode);
+        // 페이징된 댓글 데이터 가져오기
+        Map<String, Object> param = new HashMap<>();
+        param.put("postCode", postCode);
+        param.put("cPage", cPage);
+        param.put("numPerPage", numPerPage);
+
+        List<PostComment> comments = postService.selectCommentsByPostCode(param);
+        
+        // 전체 댓글 수 가져오기
+        int totalComments = postService.getCommentCount(postCode);
+        int totalPages = (int) Math.ceil((double) totalComments / numPerPage);
 
         if (post == null) {
             request.setAttribute("msg", "해당 게시글이 존재하지 않습니다.");
@@ -64,6 +83,8 @@ public class PostDetailServlet extends HttpServlet {
         //3. 데이터 request에 저장
         request.setAttribute("post", post);
         request.setAttribute("comments", comments);
+        request.setAttribute("currentPage", cPage);
+        request.setAttribute("totalPages", totalPages);
 		request.getRequestDispatcher("/WEB-INF/views/post/postdetail.jsp").forward(request, response);
 	}
 
