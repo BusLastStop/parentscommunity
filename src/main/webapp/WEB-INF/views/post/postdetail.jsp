@@ -223,42 +223,50 @@
     <div id="comment-container">
     	<div class="comment-editor">
     		<form action="${path}/post/postcommentinsert.do" method="post">
-    			<input type="hidden" name="boardRef" value="${board.boardNo}" /> <!-- 이거 db하고 추가하기! -->
-    			<input type="hidden" name="level" value="1"/>
-    			<input type="hidden" name="writer" value="${loginMember.userId}" /> <!-- 이거 db하고 추가하기! -->
-    			<input type="hidden" name="boardCommentRef" value="0"/>
-    			<textarea name="content" rows="3" cols="55"></textarea>
-    			<button type="submit" id="btn-insert">등록</button>
-    		</form>
+		    <input type="hidden" name="postCode" value="${post.postCode}" />
+		    <input type="hidden" name="userCode" value="${sessionScope.loginMember.userId}" /> 
+		    <input type="hidden" name="parentComCode" value="0" /> 
+		    <textarea name="content" rows="3" cols="55" placeholder="댓글 내용을 입력하세요." required></textarea>
+		    <button type="submit" id="btn-insert">등록</button>
+			</form>	
     	</div>
     	
     	<!--db추가해야하는 부분 확인하기! -->
     	<table id="tbl-comment">
     		<c:if test="${not empty comments}">
     			<c:forEach var="comment" items="${comments}">
-    				<c:if test="${comment.level==1}">
-    					<tr class="level1">
-    						<td>
-    							<sub class="comment=writer">${comment.boardCommentDate}</sub>
-    							<sub class="comment-date">${comment.boardCommentDate}</sub>
-    							<br>${comment.boardCommentContent}
-    						</td>
-    						
-    						<td>
-    							<button class="btn-insert2" value="${comment.boardCommentNo}">답글</button>
-    						</td>
-    					</tr>
-    				</c:if>
-    				<c:if test="${comment.level == 2}">
-    					<tr class="level2">
-    						<td>
-    							 <sub>${comment.boardCommentWriter}</sub>
-		                        <sub>${comment.boardCommentDate}</sub>
-		                        <br>${comment.boardCommentContent}
-    						</td>
-    					</tr>
-    				</c:if>
-    			</c:forEach>
+			   <c:choose>
+				    <c:when test="${comment.parentComCode == null}">
+				        <!-- 일반 댓글 -->
+				        <tr class="level1">
+				            <td>
+				                <sub class="comment-writer">${comment.writer}</sub>
+				                <sub class="comment-date">${comment.comCreated}</sub>
+				                <br>${comment.comContent}
+				            </td>
+				            <td>
+				                <button class="btn-insert2" value="${comment.comCode}">답글</button>
+				                <c:if test="${sessionScope.userCode == comment.userCode}">
+								    <a href="${path}/post/deleteComment.do?comCode=${comment.comCode}&postCode=${post.postCode}" 
+								       onclick="return confirm('정말 삭제하시겠습니까?');">
+								        삭제
+								    </a>
+								</c:if>  
+				            </td>
+				        </tr>
+				    </c:when>
+				    <c:when test="${comment.parentComCode != null}">
+				        <!-- 대댓글 -->
+				        <tr class="level2">
+				            <td>
+				                <sub>${comment.writer}</sub>
+				                <sub>${comment.comCreated}</sub>
+				                <br>${comment.comContent}
+				            </td>
+				        </tr>
+				    </c:when>
+				</c:choose>   
+			</c:forEach>	
     		</c:if>
     	</table>
     </div>
@@ -281,24 +289,25 @@
         isBookmarked = !isBookmarked;
     }
     
-	 $(".btn-insert2").click((e) => {
-	        const $parent = $(e.target).parents("tr");
-	        const $tr = $("<tr>");
-	        const $td = $("<td>").attr("colspan", "2");
-	        /* 대댓글(레벨2)을 작성하기 위한 새로운 답글 폼 생*/
-	        const $form = $(".comment-editor>form").clone();
-	        $form.find("textarea").attr({ cols: "50", rows: "1" });
-	        $form.find("button").removeAttr("id").addClass("btn-insert2");
-	        $form.find("input[name='level']").val("2");
-	        $form.find("input[name='boardCommentRef']").val($(e.target).val());
+    $(".btn-insert2").click((e) => {
+        const $parent = $(e.target).closest("tr");
+        const $tr = $("<tr>");
+        const $td = $("<td>").attr("colspan", "2");
 
-	        $td.append($form);
-	        $tr.append($td);
-	        $parent.after($tr); 
-	        /* 새로 생성한 <tr>을 부모 댓글 바로 아래에 추가*/
+        // 대댓글 입력 폼 생성
+        const $form = $(".comment-editor>form").clone();
+        $form.find("textarea").attr({ cols: "50", rows: "1" });
+        $form.find("button").removeAttr("id").addClass("btn-insert2");
+        $form.find("input[name='parentComCode']").val($(e.target).val()); // 부모 댓글 코드 설정
 
-	        $(e.target).off("click");
-	    });
+        $td.append($form);
+        $tr.append($td);
+        $parent.after($tr);
+
+        $(e.target).off("click"); // 중복 클릭 방지
+    });
+
+
 
 	    document
 	        .querySelector(".comment-editor textarea[name='content']")
@@ -314,7 +323,14 @@
 	            location.href = `${path}/post/postdelete.do?postCode=${postCode}`;
 	        }
 	    }
-
+	
+	    function deleteComment(comCode, postCode) {
+	    	/* console.log("Deleting comment with comCode:", comCode, "postCode:", postCode); // 콘솔에 값 출력 */
+	        if (confirm("정말로 댓글을 삭제하시겠습니까?")) {
+	            // 삭제 요청을 보내는 URL 구성
+	            location.href = `${path}/post/deleteComment.do?comCode=${comCode}&postCode=${postCode}`;
+	        }
+	    }
 
 
 </script>

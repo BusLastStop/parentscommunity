@@ -2,6 +2,7 @@ package com.parentscommunity.post.service;
 
 import static com.parentscommunity.common.SqlSessionTemplate.getSession;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import com.parentscommunity.common.SqlSessionTemplate;
 import com.parentscommunity.post.dao.PostDao;
 import com.parentscommunity.post.dao.PostFileDao;
 import com.parentscommunity.post.dto.Post;
+import com.parentscommunity.post.dto.PostComment;
 import com.parentscommunity.post.dto.PostFile;
 
 public class PostService {
@@ -142,8 +144,42 @@ public class PostService {
         return result;
     }
 
-    
-
+    //댓글 삽입
+    public int insertComment(PostComment comment) {
+        SqlSession sqlSession = SqlSessionTemplate.getSession();
+        int result = 0;
+        try {
+            result = postDao.insertComment(sqlSession, comment);
+            if (result > 0) {
+                sqlSession.commit();
+            } else {
+                sqlSession.rollback();
+            }
+        } finally {
+            sqlSession.close();
+        }
+        return result;
+    }
 	
+    // 댓글 목록 조회
+    public List<PostComment> selectCommentsByPostCode(String postCode) {
+        SqlSession session = getSession();
+        List<PostComment> comments = postDao.selectCommentsByPostCode(session, postCode);
+        session.close();
+        return comments;
+    }
+
+    //댓글 삭제
+    public int deleteComment(String comCode) {
+        SqlSession session = getSession();
+        int result = postDao.deleteComment(session, comCode);
+        if (result > 0) {
+            session.commit();
+        } else {
+            session.rollback();
+        }
+        session.close();
+        return result;
+    }
 
 }

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.parentscommunity.post.dto.Post;
+import com.parentscommunity.post.dto.PostComment;
 import com.parentscommunity.post.dto.PostFile;
 import com.parentscommunity.post.service.PostFileService;
 import com.parentscommunity.post.service.PostService;
@@ -33,13 +34,14 @@ public class PostDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 게시글 코드 가져오기
+		//1. 요청 파라미터 추출 => 게시글 코드 가져오기
         String postCode = request.getParameter("postCode");
 
         // PostService를 통해 조회수 증가
         PostService postService = new PostService();
         postService.increasePostView(postCode);
         
+        //2. 서비스 호출하기
         PostFileService postFileService = new PostFileService();
         List<PostFile> files = postFileService.getPostFiles(postCode);
         request.setAttribute("files", files);
@@ -48,14 +50,20 @@ public class PostDetailServlet extends HttpServlet {
         // 게시글 데이터 가져오기
         Post post = postService.getPostByCode(postCode);
         
+        // 댓글 데이터 가져오기
+        List<PostComment> comments = postService.selectCommentsByPostCode(postCode);
+
         if (post == null) {
-            response.sendRedirect(request.getContextPath() + "/error.jsp");
+            request.setAttribute("msg", "해당 게시글이 존재하지 않습니다.");
+            request.setAttribute("loc", request.getContextPath() + "/post/postlist.do");
+            request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
             return;
         }
 
-        // 데이터 request에 저장
+
+        //3. 데이터 request에 저장
         request.setAttribute("post", post);
-        
+        request.setAttribute("comments", comments);
 		request.getRequestDispatcher("/WEB-INF/views/post/postdetail.jsp").forward(request, response);
 	}
 

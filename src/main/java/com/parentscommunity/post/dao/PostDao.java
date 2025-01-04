@@ -7,7 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
 import com.parentscommunity.post.dto.Post;
-import com.parentscommunity.post.dto.PostFile;
+import com.parentscommunity.post.dto.PostComment;
 
 public class PostDao {
 	public int insertPost(SqlSession session, Post post) {
@@ -66,5 +66,20 @@ public class PostDao {
 			return session.selectOne("post.selectPostCount");
 		}
 	    
+	    // 댓글 삽입
+	    public int insertComment(SqlSession sqlSession, PostComment comment) {
+	        return sqlSession.insert("post.insertComment", comment);
+	    }
+	    
+	    // 댓글 목록 조회
+	    public List<PostComment> selectCommentsByPostCode(SqlSession session, String postCode) {
+	        return session.selectList("post.selectCommentsByPostCode", postCode);
+	    }
+	    
+	    //댓글 삭제
+	    public int deleteComment(SqlSession session, String comCode) {
+	        return session.delete("post.deleteComment", comCode);
+	    }
 
+	    
 }
