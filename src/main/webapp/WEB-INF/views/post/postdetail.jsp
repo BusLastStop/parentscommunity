@@ -231,44 +231,54 @@
 			</form>	
     	</div>
     	
-    	<!--db추가해야하는 부분 확인하기! -->
-    	<table id="tbl-comment">
-    		<c:if test="${not empty comments}">
-    			<c:forEach var="comment" items="${comments}">
-			   <c:choose>
-				    <c:when test="${comment.parentComCode == null}">
-				        <!-- 일반 댓글 -->
-				        <tr class="level1">
-				            <td>
-				                <sub class="comment-writer">${comment.writer}</sub>
-				                <sub class="comment-date">${comment.comCreated}</sub>
-				                <br>${comment.comContent}
-				            </td>
-				            <td>
-				                <button class="btn-insert2" value="${comment.comCode}">답글</button>
-				                <c:if test="${sessionScope.userCode == comment.userCode}">
-								    <a href="${path}/post/deleteComment.do?comCode=${comment.comCode}&postCode=${post.postCode}" 
-								       onclick="return confirm('정말 삭제하시겠습니까?');">
-								        삭제
-								    </a>
-								</c:if>  
-				            </td>
-				        </tr>
-				    </c:when>
-				    <c:when test="${comment.parentComCode != null}">
-				        <!-- 대댓글 -->
-				        <tr class="level2">
-				            <td>
-				                <sub>${comment.writer}</sub>
-				                <sub>${comment.comCreated}</sub>
-				                <br>${comment.comContent}
-				            </td>
-				        </tr>
-				    </c:when>
-				</c:choose>   
-			</c:forEach>	
-    		</c:if>
-    	</table>
+    <table id="tbl-comment">
+    <c:if test="${not empty comments}">
+        <!-- 댓글 루프 -->
+        <c:forEach var="comment" items="${comments}">
+            <!-- 댓글 출력 -->
+            <c:if test="${comment.parentComCode == null}">
+                <tr class="level1">
+                    <td>
+                        <sub class="comment-writer">${comment.writer}</sub>
+                        <sub class="comment-date">${comment.comCreated}</sub>
+                        <br>${comment.comContent}
+                    </td>
+                    <td>
+                        <button class="btn-insert2" value="${comment.comCode}">답글</button>
+                        <c:if test="${sessionScope.userCode == comment.userCode}">
+                            <a href="${path}/post/deleteComment.do?comCode=${comment.comCode}&postCode=${post.postCode}" 
+                               onclick="return confirm('정말 삭제하시겠습니까?');">
+                                삭제
+                            </a>
+                        </c:if>
+                    </td>
+                </tr>
+
+                <!-- 대댓글 루프 -->
+                <c:forEach var="reply" items="${comments}">
+                    <c:if test="${reply.parentComCode == comment.comCode}">
+                        <tr class="level2">
+                            <td>
+                                <sub class="comment-writer">${reply.writer}</sub>
+                                <sub class="comment-date">${reply.comCreated}</sub>
+                                <br>${reply.comContent}
+                            </td>
+                            <td>
+                                <c:if test="${sessionScope.userCode == reply.userCode}">
+                                    <a href="${path}/post/deleteComment.do?comCode=${reply.comCode}&postCode=${post.postCode}" 
+                                       onclick="return confirm('정말 삭제하시겠습니까?');">
+                                        삭제
+                                    </a>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+            </c:if>
+        </c:forEach>
+    </c:if>
+</table>
+    	
     </div>
 </section>
 
