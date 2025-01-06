@@ -7,72 +7,130 @@
 <!-- FullCalendar 영역 -->
 <div id="calendar" style="max-width: 900px; margin: 0 auto; padding: 20px;"></div>
 
+<!-- 일정 추가 팝업 -->
+<div id="schedulePopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; width: 400px; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); padding: 20px;">
+    <h3 style="margin: 0 0 10px;">일정 추가</h3>
+    <label>일정을 입력하세요.</label>
+    <input type="text" id="eventTitle" placeholder="일정 제목" style="width: 100%; margin-bottom: 10px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+
+    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <input type="date" id="startDate" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        <input type="time" id="startTime" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+    </div>
+    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <input type="date" id="endDate" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        <input type="time" id="endTime" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+    </div>
+
+    <label>목록</label>
+    <div id="categoryWrapper" style="margin-bottom: 10px;">
+        <select id="category" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px;">
+            <option value="">선택하세요</option>
+        </select>
+        <div style="display: flex; gap: 5px;">
+            <button onclick="openAddCategory()" style="padding: 8px; flex: 1; border: none; background-color: #007BFF; color: white; border-radius: 4px; cursor: pointer;">추가</button>
+            <button onclick="openDeleteCategory()" style="padding: 8px; flex: 1; border: none; background-color: #FF4D4D; color: white; border-radius: 4px; cursor: pointer;">삭제</button>
+        </div>
+    </div>
+
+    <label>상세 설명</label>
+    <textarea id="description" rows="4" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; resize: none;"></textarea>
+
+    <div style="margin-top: 10px; display: flex; justify-content: space-between;">
+        <button onclick="saveEvent()" style="background-color: #007BFF; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">저장</button>
+        <button onclick="closePopup()" style="background-color: #ccc; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">취소</button>
+    </div>
+</div>
+
 <!-- FullCalendar 스타일과 스크립트 추가 -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/ko.global.min.js"></script>
 
 <style>
-    /* 달력 커스터마이징 스타일 */
+	/* 전역 초기화 */
+	* {
+	    margin: 0;
+	    padding: 0;
+	    box-sizing: border-box;
+	    border: none;
+	    outline: none;
+	}
+	
+	/* FullCalendar 기본 스타일 수정 */
+	.fc-daygrid-day {
+	    border: none;
+	}
+
+    :root {
+        --mainColor1: #ff0000; /* 일요일 색상 */
+        --subColor1: #0000ff; /* 토요일 색상 */
+        --subColor2: #EDE7F6; /* 툴바 배경색 */
+    }
+
     #calendar {
         font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .fc-toolbar {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 20px !important;
+        background-color: var(--subColor2);
+        border-radius: 20px;
+        padding: 10px 20px;
+    }
+
+    .fc-toolbar-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .fc .fc-button {
+        background-color: transparent;
+        color: var(--subColor1);
         border: none;
     }
-    .fc-toolbar {
-        display: flex !important; /* 강제로 flex 적용 */
-        justify-content: center !important; /* 중앙 정렬 */
-        align-items: center !important; /* 세로 중앙 정렬 */
-        margin-bottom: 20px !important;
+
+    .fc .fc-button:hover {
+        background-color: transparent;
     }
-    .fc-toolbar-chunk {
-        display: flex !important; /* 버튼과 제목을 정렬 */
-        align-items: center !important; /* 세로 중앙 정렬 */
-    }
-    .fc-toolbar-chunk:first-child {
-        margin-right: 10px !important; /* 제목 왼쪽에 버튼 */
-    }
-    .fc-toolbar-chunk:last-child {
-        margin-left: 10px !important; /* 제목 오른쪽에 버튼 */
-    }
-    .fc-toolbar-title {
-        font-size: 1.5em !important;
-        font-weight: bold !important;
-        text-align: center !important;
-        flex: 0 0 auto !important; /* 제목 크기 고정 */
-        margin: 0 10px !important; /* 버튼과 제목 사이에 여백 추가 */
-    }
-    .fc-button {
-        background-color: #f0f0f0;
-        color: black;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-    }
-    .fc-button:hover {
-        background-color: #e0e0e0;
-    }
-    .fc-button:disabled {
-        background-color: #ddd;
-    }
+
     .fc-daygrid-day {
-        border: 1px solid #e0e0e0;
+        border: 1px solid #f1f1f1;
     }
+
+    .fc-day-sun a {
+        color: var(--mainColor1);
+    }
+
+    .fc-day-sat a {
+        color: var(--subColor1);
+    }
+
     .fc-day-today {
-        background-color: #ffffcc;
+        background-color: #fdfdfd;
+        border: 1px solid #ddd;
     }
-    .fc-searchButton-button {
-        background: none; /* 배경 제거 */
-        border: none; /* 테두리 제거 */
-        color: #007BFF; /* 돋보기 아이콘 색상 지정 (파란색) */
-        font-size: 1.2em; /* 아이콘 크기 조정 */
-        cursor: pointer; /* 커서 포인터 설정 */
+
+    .fc-event {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 3px;
+        border-radius: 3px;
+        font-size: 0.85rem;
     }
-    .fc-searchButton-button:hover {
-        color: #0056b3; /* 호버 시 더 진한 파란색 */
+
+    .fc .fc-today-button {
+        background-color: var(--subColor1);
+        color: #fff;
+        border-radius: 5px;
+        padding: 5px 10px;
     }
-  
 </style>
 
 <script>
@@ -83,34 +141,122 @@
             initialView: 'dayGridMonth',
             locale: 'ko',
             headerToolbar: {
-                left: 'searchButton prev',  // 돋보기 왼쪽 끝으로 이동
-                center: 'title', // 중앙에 제목
-                right: 'next addEventButton' // 다음 버튼과 "일정추가" 버튼
+                left: 'prev',
+                center: 'title',
+                right: 'next addEventButton'
             },
             customButtons: {
-                searchButton: {
-                    text: '', // 텍스트는 비워둠
-                    click: function () {
-                        alert('돋보기 아이콘이 클릭되었습니다!');
-                    }
-                },
                 addEventButton: {
                     text: '일정추가',
                     click: function () {
-                        alert('일정추가 버튼이 클릭되었습니다!');
+                        openPopup();
                     }
                 }
             },
             buttonText: {
-                today: '오늘' // "Today" 버튼 텍스트 수정
+                today: '일정추가'
             },
-            events: [] // 초기에는 비어 있는 이벤트
+            events: []
         });
 
         calendar.render();
     });
+
+    function openPopup() {
+        document.getElementById('schedulePopup').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('schedulePopup').style.display = 'none';
+    }
+
+    function saveEvent() {
+        const title = document.getElementById('eventTitle').value;
+        const startDate = document.getElementById('startDate').value;
+        const startTime = document.getElementById('startTime').value;
+        const endDate = document.getElementById('endDate').value;
+        const endTime = document.getElementById('endTime').value;
+        const category = document.getElementById('category').value;
+        const description = document.getElementById('description').value;
+
+        if (!title || !startDate || !startTime || !endDate || !endTime || !category) {
+            alert('모든 필드를 채워주세요.');
+            return;
+        }
+
+        console.log({ title, startDate, startTime, endDate, endTime, category, description });
+
+        closePopup();
+    }
+
+    function openAddCategory() {
+        const newCategoryInput = prompt('추가할 목록 이름을 입력하세요.').trim();
+        if (newCategoryInput === '') {
+            alert('목록 이름을 입력해주세요.');
+            return;
+        }
+
+        // 서버로 카테고리 추가 요청 보내기
+        fetch('/calendar.do', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                action: 'addCategory',
+                categoryName: newCategoryInput
+            })
+        })
+        .then(response => response.text())
+        .then(result => {
+            alert(result); // 서버 응답 메시지 출력
+            // 카테고리 목록 새로고침
+            loadCategories();
+        });
+    }
+
+    function openDeleteCategory() {
+        const categorySelect = document.getElementById('category');
+        const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+
+        if (!selectedOption || selectedOption.value === '') {
+            alert('삭제할 목록을 선택해주세요.');
+            return;
+        }
+
+        if (confirm(`${selectedOption.textContent}을(를) 삭제하시겠습니까?`)) {
+            // 서버로 카테고리 삭제 요청 보내기
+            fetch('/calendar.do', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    action: 'deleteCategory',
+                    categoryName: selectedOption.value
+                })
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert(result); // 서버 응답 메시지 출력
+                // 카테고리 목록 새로고침
+                loadCategories();
+            });
+        }
+    }
+
+    // 서버에서 카테고리 목록 불러오기
+    function loadCategories() {
+        fetch('/calendar.do?action=getCategories')
+            .then(response => response.json())
+            .then(categories => {
+                const categorySelect = document.getElementById('category');
+                categorySelect.innerHTML = '<option value="">선택하세요</option>';
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.schCateCode;
+                    option.textContent = category.schCateName;
+                    categorySelect.appendChild(option);
+                });
+            });
+    }
+
 </script>
-
-
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

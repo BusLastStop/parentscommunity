@@ -125,37 +125,56 @@ button.report {
 </style>
 <section>
     <div id="board-title">
-        <h2>제목</h2>
+        <h2><c:out value="${resource.resTitle}" default="제목 없음" /></h2>
         <div class="details">
-            <p>닉네임</p>
-            <p>2024-12-16</p>
+            <p>작성자: <c:out value="${resource.userNickname}" default="닉네임 없음" /></p>
+            <p>작성일: <c:out value="${resource.resDateTime}" default="날짜 없음" /></p>
         </div>
     </div>
     <div class="board-container">
-        <div id="post">
-            <pre id="content"></pre>
+        <div id="resource">
+            <pre id="content"><c:out value="${resource.resContent}" default="내용이 없습니다." /></pre>
         </div>
         <div class="attachments">
             <h3>첨부파일</h3>
             <ul id="attachmentList">
-                <li><a href="#">첨부파일1.pdf</a></li>
-                <li><a href="#">첨부파일2.jpg</a></li>
+                <c:forEach var="file" items="${resfile}">
+                    <li>
+                       <a href="${path}/resources/filedownload.do?originalFileName=${file.originalResName}&renamedFileName=${file.renamedResName}" target="_blank">
+                            <c:out value="${file.originalResName}" />
+                        </a>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
         <div id="buttons">
             <div class="left-side">
-                <button onclick="location.assign('${pageContext.request.contextPath}/post/postlist.do')">목록</button>
-                <button class="download" onclick="alert('다운로드 기능')">다운로드</button>
-                <button class="smtp" onclick="location.href='${path}/resources/smtp.do'">SMTP</button>
+                <button onclick="location.assign('${path}/resources/resourceslist.do')">목록</button>
+                <button class="smtp" onclick="openSMTP()">SMTP</button>
             </div>
             <div class="right-side">
                 <button class="report" onclick="alert('신고!')">신고</button>
-                <button onclick="alert('수정!')">수정</button>
-                <button onclick="alert('삭제!')">삭제</button>
+                <button onclick="location.href='${path}/resources/resourcesedit.do?resCode=${resource.resCode}'">수정</button>
+                <button onclick="confirmDelete('${resource.resCode}')">삭제</button>
             </div>
         </div>
     </div>
-    
 </section>
+
+<script>
+    function confirmDelete(resCode) {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            location.href = '${path}/resources/resourcesdelete.do?resCode=' + resCode;
+        }
+    }
+    
+ // 팝업창 열기 함수
+    function openSMTP() {
+        const url = '${path}//resources/smtp.do';
+        const options = 'width=500,height=600,scrollbars=yes,resizable=no';
+        window.open(url, 'SMTP메일전송', options);
+    }
+</script>
+
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

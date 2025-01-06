@@ -157,12 +157,13 @@ header, footer {
 		</div>
 		
 		 <div class="form-group">
-        <label for="file">첨부파일</label>
-        <input type="file" id="file" name="files" multiple>
+	        <label for="file">첨부파일</label>
+	        <input type="file" id="fisle" name="files[]" multiple>
     	</div>
+  
 		
 		<div class="form-actions">
-			<button type="submit" class="btn-submit">등록</button>
+			<button type="submit" id="submitBtn class="btn-submit">등록</button>
 		</div>
 	</form>	
 </div>

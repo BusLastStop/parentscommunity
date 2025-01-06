@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<c:set var="path" value="${pageContext.request.contextPath}"/>  
+
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <style>
 	body {
@@ -82,12 +86,19 @@
 	    background-color: #4caf50; /* 등록 버튼의 배경색 (녹색) */
 	    color: white; /* 글자색을 흰색으로 설정 */
 	}
+	#fileList li {
+    display: list-item;
+    font-size: 16px;
+    color: #333;
+    padding: 5px 0;
+}
+	
 	
 </style>
 
 <div class="write-container">
 	<h1>게시글 작성</h1>
-	<form action="{pageContext.request.contextPath}/resources/resourceswrite.do" method="post" enctype="multipart/form-data">
+	<form action="${path}/resources/resourceswriteend.do" method="post" enctype="multipart/form-data">
 	
 		<div class="form-group">
 			<label>제목</label>
@@ -98,10 +109,10 @@
 			<label for="category">카테고리</label>
 			<select id="category" name="category" required>
 				<option value ="" disabled select>카테고리를 선택하세요.</option>
-				<option value="입시정보">입시정보</option>
-                <option value="대학소개">대학소개</option>
-                <option value="학습자료">학습자료</option>
-                <option value="기타">기타</option>
+				<option value="RES001">입시정보</option>
+                <option value="RES002">학습자료</option>
+                <option value="RES003">대학소개</option>
+                <option value="RES004">기타</option>
 			</select>
 		</div>
 		
@@ -110,15 +121,68 @@
 			<textarea id="content" name="content" maxlength="10000" placeholder="내용을 입력하세요" required></textarea>
 		</div>
 		
-		<div>
-			<label for="file">첨부파일</label>
-			<input type="file" id="file" name="file" multiple>
+		<div class="form-group">
+			<label>첨부파일</label>
+			<input type="file" id="fileInput" name="file" multiple>
+			<ul id="fileList"></ul>
 		</div>
 		
 		<div class="form-actions">
-			<button type="submit" class="btn-submit">등록</button>
+			<button type="button" id="submitForm" class="btn-submit">등록</button>
 		</div>
 	</form>	
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    const fileList = [];
+    const path = '${path}';
+
+    // 파일 선택 시 처리
+    $('#fileInput').on('change', function(event) {
+        const files = event.target.files;
+        console.log(files); // 선택된 파일의 정보를 출력
+        for (const file of files) {
+        	console.log(file.name); // 각 파일의 이름 출력
+            fileList.push(file);
+            $('#fileList').append(`<li>\${file.name}</li>`);
+        }
+        /* $('#fileInput').val('');  */ // 파일 선택 초기화
+         console.log('fileList 배열:', fileList); // fileList 배열 상태 확인
+    });
+
+    // 폼 제출
+    $('#submitForm').on('click', function() {
+        const formData = new FormData();
+        //데이터의 키, 값 형태로 데이터 추가
+        //val은 입력 필드의 현재 값을 가져오는 메서드
+        formData.append('title', $('#title').val());
+        formData.append('category', $('#category').val());
+        formData.append('content', $('#content').val());
+
+     // fileList의 모든 파일 추가
+        fileList.forEach((file, index) => {
+            formData.append('file'+index, file); // 'files'라는 키로 서버에 전송
+        });
+		
+        // Ajax 요청
+        $.ajax({
+            url: path + '/resources/resourceswriteend.do',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('게시글이 등록되었습니다!');
+                window.location.href = path + '/resources/resourceslist.do'; 
+            },
+            error: function() {
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
+    });
+});
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
