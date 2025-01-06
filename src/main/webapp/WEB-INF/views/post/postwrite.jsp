@@ -137,17 +137,17 @@ header, footer {
 		-->
 		
 		<div class="form-group">
-    <label for="category">카테고리</label>
-    <select id="category" name="category" required>
-        <option value="" disabled selected>카테고리를 선택하세요.</option>
-        <option value="CAT001">입시정보</option>
-        <option value="CAT002">학교생활</option>
-        <option value="CAT003">공부법</option>
-        <option value="CAT004">자녀 고민상담</option>
-        <option value="CAT005">자유</option>
-        <option value="CAT006">익명</option>
-        <option value="CAT007">홍보</option>
-    </select>
+	    <label for="category">카테고리</label>
+	    <select id="category" name="category" required>
+	        <option value="" disabled selected>카테고리를 선택하세요.</option>
+	        <option value="CAT001">입시정보</option>
+	        <option value="CAT002">학교생활</option>
+	        <option value="CAT003">공부법</option>
+	        <option value="CAT004">자녀 고민상담</option>
+	        <option value="CAT005">자유</option>
+	        <option value="CAT006">익명</option>
+	        <option value="CAT007">홍보</option>
+	    </select>
 </div>
 		
 		

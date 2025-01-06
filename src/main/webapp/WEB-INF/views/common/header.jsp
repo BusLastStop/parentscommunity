@@ -10,74 +10,111 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
-	* {
-		font-family: "Noto Sans KR", serif;
-		font-optical-sizing: auto;
-		font-weight: 500;
-		font-style: normal;
-		border: 1px solid #90caf9;
-		color: #212121;
-	}
-	body {
-		overflow-y: scroll;
-		overflow-x: hidden;
-	}
-	header {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-	div#headerUser {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		width: 80%;
-		padding: 3px;
-	}
-	div#headerMenu {
-		display: flex;
-		justify-content: space-around;
-		align-items: center;
-		width: 80%;
-	}
-	#headerUser a {
-		margin-right: 10px;
-	}
-	#headerMenu>* {
-		cursor: pointer;
-	}
-	a {
-		text-decoration: none;
-	}
+    header {
+        background-color: #ffffff; /* 화이트 배경 */
+        padding: 15px 0;
+        font-family: "Noto Sans KR", sans-serif;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 은은한 그림자 */
+    }
 
-	/* 드롭다운 메뉴 */
-	.dropdown {
-		position: relative;
-		display: inline-block;
-	}
-	.dropdown-content {
-		display: none;
-		position: absolute;
-		right: 0;
-		background-color: #f5f5f5;
-		min-width: 120px;
-		box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-		z-index: 1;
-	}
-	.dropdown-content a {
-		color: black;
-		padding: 10px 12px;
-		text-decoration: none;
-		display: block;
-		text-align: left;
-	}
-	.dropdown-content a:hover {
-		background-color: #ddd;
-	}
-	.dropdown:hover .dropdown-content {
-		display: block;
-	}
+    #headerUser {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 20px;
+        margin-bottom: 10px;
+    }
+
+    #headerUser a {
+        margin: 0 15px;
+        font-size: 14px;
+        color: #6ab5ff; /* 밝은 파란색 */
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    #headerUser a:hover {
+        color: #3789cc; /* 더 진한 파란색 */
+    }
+
+    #headerMenu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+
+    #headerMenu img {
+        margin-right: 30px;
+    }
+
+    #headerMenu h2 {
+        margin: 0 20px;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    #headerMenu a {
+        color: #333333; /* 진한 회색 텍스트 */
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    #headerMenu a:hover {
+        color: #6ab5ff; /* 강조 파란색 */
+    }
+
+    /* 드롭다운 메뉴 */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #ffffff; /* 화이트 배경 */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+        z-index: 10;
+    }
+
+    .dropdown-content a {
+        color: #333333; /* 텍스트 색상 */
+        padding: 10px 15px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f5ff; /* 연한 파란색 배경 */
+        color: #6ab5ff; /* 강조 파란색 */
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* 사용자 이름 */
+    #userMenu {
+        color: #6ab5ff;
+        cursor: pointer;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    #userMenu:hover {
+        color: #3789cc;
+    }
 </style>
+
+
 <title>학부모 커뮤니티</title>
 </head>
 <body>
@@ -106,7 +143,7 @@
 
 	<div id="headerMenu">
 		<a href="${path}">
-			<img src="${path}/resources/images/blue.png" width="100" height="60">
+			<img src="${path}/resources/images/bus.png" width="100" height="60">
 		</a>
 		<h2><a href="${path}/resources/resourceslist.do">교육정보</a></h2>
 		<h2><a href="${path}/post/postlist.do">대학정보 게시판</a></h2>

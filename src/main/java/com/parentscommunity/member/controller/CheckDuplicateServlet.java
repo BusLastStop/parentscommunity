@@ -56,6 +56,7 @@ public class CheckDuplicateServlet extends HttpServlet {
 		
 		// JSON 응답 생성
         response.setContentType("application/json"); //json형식이라고 알려주는 코드 
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"isDuplicate\": " + isDuplicate + "}");
 	}
 

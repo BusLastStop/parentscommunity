@@ -42,15 +42,23 @@
         height: 30px;
         border: 1px solid #BBDEFB;
     }
-    #find-password-form button {
-        height: 35px;
+    #find-password-form input[type="submit"] {
         background-color: #90CAF9;
         border: none;
         cursor: pointer;
         color: white;
         font-weight: bold;
+        height: 35px;
     }
-    #find-password-form button:hover {
+    #find-password-form button {
+        background-color: #90CAF9; /* 버튼 배경색 */
+        border: none;
+        color: white;
+        font-weight: bold;
+        height: 35px;
+        cursor: pointer;
+    }
+    #find-password-form input[type="submit"]:hover {
         background-color: #64B5F6;
     }
 </style>
@@ -71,7 +79,7 @@
             <p>전화번호</p>
             <input type="text" name="phone" placeholder="예: 01012345678" required>
 
-            <button type="submit">비밀번호 찾기</button>
+            <button type="submit" >비밀번호 찾기</button>
         </form>
     </div>
 </body>

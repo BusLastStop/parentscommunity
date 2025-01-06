@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="path" value="${pageContext.request.contextPath}"/> 
 
 <!DOCTYPE html>
@@ -9,6 +11,7 @@
 <meta charset="UTF-8">
 
 <title>회원가입</title>
+
 <style>
     body{
         display:flex;
@@ -136,7 +139,7 @@
                 <button type="button" onclick="checkDuplicate('userEmail', document.getElementById('emailInput').value)">중복 확인</button>
             </div>
              <!-- 메시지 표시 영역 -->
-        	<span id="email-message" class="message"></span>
+        	<span id="userEmail-message" class="message"></span>
 
             <p>핸드폰</p>
             <div class="inline">
@@ -157,7 +160,7 @@
                 <button type="button" onclick="checkDuplicate('userNickname', document.getElementById('nicknameInput').value)">중복 확인</button>
             </div>
              <!-- 메시지 표시 영역 -->
-       		 <span id="nickname-message" class="message"></span>
+       		 <span id="userNickname-message" class="message"></span>
 
             <p>회원 유형</p>
             <div class="inline">
@@ -184,9 +187,9 @@
             <input type="submit" value="회원가입" class="submit-btn">
         </form>
     </div>
-    
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>  
   <script>
-  
+  const path = "${path}";
   const value = "example value with spaces";
   const encodedValue = encodeURIComponent(value);
   console.log(encodedValue);
@@ -226,34 +229,50 @@
         }
     });
 
-	//중복 확인 요청 
-	function checkDuplicate(type, value) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/parentscommunity/member/checkDuplicate.do', true); // 서버 URL
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // 요청 헤더 설정
+    function checkDuplicate(type, value) {
+    	console.log("checkDuplicate 호출됨"); // 디버깅용 출력
+        console.log("type:", type, "value:", value); // 전달된 값 확인
+        // 공백이나 null 값 체크
+        if (!value.trim()) {
+            alert(`${type}를 입력해주세요.`);
+            return;
+        }
 
-    // 요청 완료 후 실행될 콜백 함수
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText); // JSON 파싱
-                const message = document.getElementById(`${type}-message`);
+        $.ajax({
+            url: path +'/member/checkDuplicate.do', // 서버 URL
+            type: 'POST',
+            data: {
+                type: type,
+                value: value
+            },
+            success: function (response) {
+                // 서버 응답 처리
+                const message = document.getElementById(`\${type}-message`);
+                if (!message) {
+                    console.error(`ID가 '${type}-message'인 요소를 찾을 수 없습니다.`);
+                    return;
+                }
+                
                 if (response.isDuplicate) {
-                    message.textContent = `${type}가 이미 사용 중입니다.`;
+                    message.textContent = `${type}는 이미 사용 중입니다.`;
                     message.style.color = 'red';
                 } else {
                     message.textContent = `${type}는 사용 가능합니다.`;
                     message.style.color = 'green';
                 }
-            } else {
-                console.error('오류 발생:', xhr.status, xhr.statusText);
+            },
+            error: function (xhr, status, error) {
+                console.error('Ajax 요청 오류:', xhr.status, status, error);
+                alert('중복 확인 중 오류가 발생했습니다.');
             }
-        }
-    };
+        });
+    }
 
+   //const xhr=new XMLHttpRequest();
+ 
     // 요청 데이터 전송
-    xhr.send(`type=${type}&value=${encodeURIComponent(value)}`);
-}
+    //xhr.send(`type=${type}&value=\${encodeURIComponent(value)}`);
+  	
 
 
 </script>

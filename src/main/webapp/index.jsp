@@ -2,11 +2,21 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
+<style>
+		/* 전역 초기화 */
+	* {
+	    margin: 0;
+	    padding: 0;
+	    box-sizing: border-box;
+	    border: none;
+	    outline
+</style>
+
 <section>
 	<div style="display:flex;justify-content:space-around;">
-		<img src="${pageContext.request.contextPath}/resources/images/community.png" width="500" height="500">
+		<img src="${pageContext.request.contextPath}/resources/images/community.png" width="800" height="500">
 	</div>
-	<div style="display:flex;justify-content:space-around;align-items:center;width:100%;height:500px;">
+	<!-- <div style="display:flex;justify-content:space-around;align-items:center;width:100%;height:500px;">
 		<div class="writer-container" style="width:40%;height:400px;min-width:510px;">
 			<div class="writer-header">
 				<h2 class="writer-title">대학정보 게시판</h2>
@@ -30,6 +40,6 @@
 				<li>대학합격</li>
 			</ul>
 		</div>
-	</div>
+	</div> -->
 </section>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
-<style>
+<!-- <style>
 	section{ display:flex;flex-direction:column;align-items:center;min-height:700px; }
 	div#boardList{ width:80%;min-height:600px;}
 	div#boardList>h2{ display:inline-block;margin:10px 0 10px 10%; }
@@ -59,21 +59,179 @@
     color: white;
     pointer-events: none; /* 클릭 비활성화 */
 }
+</style> -->
+
+<style>
+    /* 전체 섹션 스타일 */
+    section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        background-color: #f9f9f9; /* 배경색 추가 */
+    }
+
+    /* 게시판 리스트 스타일 */
+    div#boardList {
+        width: 80%;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 박스 그림자 */
+    }
+
+    div#boardList > h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #333;
+    }
+
+    /* 테이블 스타일 */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+    }
+
+    thead {
+        background-color: #f1f1f1;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        font-weight: bold;
+        color: #555;
+    }
+
+    tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    /* 검색창 스타일 */
+    div#search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    div#search > input, div#search > select {
+        height: 35px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+        padding: 5px 10px;
+        font-size: 14px;
+        width: 250px;
+    }
+
+    div#search > button {
+        height: 35px;
+        background-color: #90CAF9;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    div#search > button:hover {
+        background-color: #64B5F6;
+    }
+
+    /* 글쓰기 버튼 스타일 */
+    div#write {
+        text-align: right;
+        margin: 20px 0;
+    }
+
+    div#write > button {
+        background-color: #0D47A1;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    div#write > button:hover {
+        background-color: #1565C0;
+    }
+
+    /* 페이지네이션 스타일 */
+    #pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    #pagination li {
+        list-style: none;
+        margin: 0 5px;
+    }
+
+    #pagination a {
+        text-decoration: none;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white;
+        color: #333;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    #pagination a:hover {
+        background-color: #90CAF9;
+        color: white;
+    }
+
+    #pagination .active {
+        background-color: #0D47A1;
+        color: white;
+        pointer-events: none;
+    }
 </style>
+
 <section>
 	<div id="boardList">
 		<h2>전체 글보기</h2><br>
+		
+		<div id="search">
+			<form action="${path}/post/postlist.do" method="get">
+			<select name="searchType">
+				 <option value="게시글 제목" ${searchType == '게시글 제목' ? 'selected' : ''}>게시글 제목</option>
+            	<option value="작성자" ${searchType == '작성자' ? 'selected' : ''}>작성자</option>
+			</select>
+			<input type="text" name="searchKeyword" value="${searchKeyword != null ? searchKeyword : ''}" placeholder="검색어를 입력하세요">
+			<button type="submit">검색</button>
+			</form>
+		</div>
+		
 		<form action="${path}/post/postlist.do" method="get" id="categoryForm">
-    <select id="board-category" name="category" onchange="document.getElementById('categoryForm').submit()">
-        <option value="" ${category == null || category == '' ? 'selected' : ''}>카테고리</option>
-        <option value="CAT001" ${category == 'CAT001' ? 'selected' : ''}>입시정보</option>
-        <option value="CAT002" ${category == 'CAT002' ? 'selected' : ''}>학교생활</option>
-        <option value="CAT003" ${category == 'CAT003' ? 'selected' : ''}>공부법</option>
-        <option value="CAT004" ${category == 'CAT004' ? 'selected' : ''}>자녀 고민상담</option>
-        <option value="CAT005" ${category == 'CAT005' ? 'selected' : ''}>자유</option>
-        <option value="CAT006" ${category == 'CAT006' ? 'selected' : ''}>익명</option>
-        <option value="CAT007" ${category == 'CAT007' ? 'selected' : ''}>홍보</option>
-    </select>
+	    <select id="board-category" name="category" onchange="document.getElementById('categoryForm').submit()">
+	        <option value="" ${category == null || category == '' ? 'selected' : ''}>카테고리</option>
+	        <option value="CAT001" ${category == 'CAT001' ? 'selected' : ''}>입시정보</option>
+	        <option value="CAT002" ${category == 'CAT002' ? 'selected' : ''}>학교생활</option>
+	        <option value="CAT003" ${category == 'CAT003' ? 'selected' : ''}>공부법</option>
+	        <option value="CAT004" ${category == 'CAT004' ? 'selected' : ''}>자녀 고민상담</option>
+	        <option value="CAT005" ${category == 'CAT005' ? 'selected' : ''}>자유</option>
+	        <option value="CAT006" ${category == 'CAT006' ? 'selected' : ''}>익명</option>
+	        <option value="CAT007" ${category == 'CAT007' ? 'selected' : ''}>홍보</option>
+	    </select>
 </form>
 		
 		
@@ -122,16 +280,7 @@
             ${pageBar}
         </div>
 
-		<div id="search">
-			<form action="${path}/post/postlist.do" method="get">
-			<select name="searchType">
-				 <option value="게시글 제목" ${searchType == '게시글 제목' ? 'selected' : ''}>게시글 제목</option>
-            	<option value="작성자" ${searchType == '작성자' ? 'selected' : ''}>작성자</option>
-			</select>
-			<input type="text" name="searchKeyword" value="${searchKeyword != null ? searchKeyword : ''}" placeholder="검색어를 입력하세요">
-			<button type="submit">검색</button>
-			</form>
-		</div>
+		
 	</div>
 </section>
 
