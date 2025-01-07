@@ -131,32 +131,34 @@ header, footer {
 		<div class="form-group">
 		    <label>첨부된 파일</label>
 		    <ul>
-        <c:forEach var="file" items="${attachedFiles}">
-            <li id="file-${file.postFileCode}">
-                <a href="${path}/post/filedownload.do?originalFileName=${file.originalFileName}&renamedFileName=${file.renamedFileName}" target="_blank">
-                    ${file.originalFileName}
-                </a>
-                <button type="button" onclick="markFileForDeletion(event, '${file.postFileCode}')">삭제</button>
-            </li>
-        </c:forEach>
-    </ul>
+		        <c:forEach var="file" items="${attachedFiles}">
+		            <li id="file-${file.postFileCode}">
+		                <a href="${path}/post/filedownload.do?originalFileName=${file.originalFileName}&renamedFileName=${file.renamedFileName}" target="_blank">
+		                    ${file.originalFileName}
+		                </a>
+		                <button type="button" onclick="markFileForDeletion(event, '${file.postFileCode}')">삭제</button>
+		            </li>
+		        </c:forEach>
+    		</ul>
 		</div>
 
 		<div class="form-group">
 		    <label for="newFiles">새로 첨부할 파일</label>
-		    <input type="file" id="newFiles" name="newFiles" multiple />
+		    <input type="file" id="newFiles" name="newFiles[]" multiple />
+		    <ul id="filePreview"></ul>
 		</div>
 				
     
 		<div class="form-actions">
-			<button type="submit" class="btn-submit">저장</button> <!-- 수정 완료 버튼 -->
+			<button type="submit" id="saveBtn" class="btn-submit">저장</button> <!-- 수정 완료 버튼 -->
 			<button type="button" onclick="restoreFilesAndRedirect('${post.postCode}')">취소</button> <!-- 취소 버튼 -->
 		</div>
 	</form>	
 </div>
 
 <script>
-    // 삭제 버튼 클릭 시 파일 삭제 목록에 추가
+
+   /*  // 삭제 버튼 클릭 시 파일 삭제 목록에 추가
     function markFileForDeletion(e,fileCode) {
         $.get("${path}/post/postFileModification.do?postFileCode=" +fileCode + "&flag=mark")
         .done(data=>{
@@ -167,7 +169,6 @@ header, footer {
         	}
         });
      }
-        
 
         function restoreFilesAndRedirect(postCode) {
             // 파일 상태 복구 요청
@@ -184,18 +185,106 @@ header, footer {
                 .fail(() => {
                     alert("파일 복구 요청 중 오류가 발생했습니다.");
                 });
-    	/* const deleteInput = document.createElement("input");
-        deleteInput.type = "hidden";
-        deleteInput.name = "deleteFileCodes"; // 서블릿에서 이 이름으로 받음
-        deleteInput.value = fileCode;
+    } */
+    
+    $(document).ready(function () {
+        const deleteFileCodes = []; // 삭제된 파일 코드 저장
+        const newFiles = []; // 새로 추가된 파일 리스트
 
-        // 폼에 추가
-        document.querySelector("form").appendChild(deleteInput);
+        // 기존 파일 삭제 처리
+        window.markFileForDeletion = function (event, fileCode) {
+            $.get("${path}/post/postFileModification.do?postFileCode=" + fileCode + "&flag=mark")
+                .done(data => {
+                    if (data === "") {
+                        $(event.target).closest('li').remove(); // UI에서 제거
+                        deleteFileCodes.push(fileCode); // 삭제된 파일 코드 저장
+                        console.log("삭제된 파일 코드:", deleteFileCodes);
+                    } else {
+                        alert("파일 삭제에 실패했습니다.");
+                    }
+                })
+                .fail(() => {
+                    alert("파일 삭제 요청 중 오류가 발생했습니다.");
+                });
+        };
 
-        // 삭제 표시 (UI 업데이트)
-        alert("파일이 삭제 목록에 추가되었습니다."); */
-        
-        
+        // 새 파일 선택 시 업데이트
+        $('#newFiles').on('change', function (event) {
+            const files = event.target.files;
+
+            // 새로 추가된 파일 리스트 UI 업데이트
+            $('#filePreview').empty();
+            Array.from(files).forEach((file, index) => {
+                newFiles.push(file);
+                $('#filePreview').append(`<li>\${file.name} <button type="button" onclick="removeNewFile(${index})">삭제</button></li>`);
+            });
+        });
+
+        // 새 파일 삭제 처리
+        window.removeNewFile = function (index) {
+            newFiles.splice(index, 1); // 파일 리스트에서 제거
+            $(`#filePreview li:nth-child(${index + 1})`).remove(); // UI 업데이트
+            console.log("새로 추가된 파일 (수정됨):", newFiles);
+        };
+
+        // 저장 버튼 클릭 시 AJAX로 폼 제출
+        $('#saveBtn').on('click', function (event) {
+        	
+            event.preventDefault(); // 기본 폼 제출 방지
+            const formData = new FormData();
+
+            // 기본 데이터 추가
+            formData.append('postCode', $('input[name="postCode"]').val());
+            formData.append('title', $('#title').val());
+            formData.append('category', $('#category').val());
+            formData.append('content', $('#content').val());
+
+            // 삭제된 파일 코드 추가
+            if (deleteFileCodes.length > 0) {
+                formData.append('deleteFileCodes', deleteFileCodes.join(','));
+            }
+
+            // 새 파일 추가
+            newFiles.forEach((file,index) => formData.append('newFiles'+index, file));
+			event.target.innerText='저장중....';
+			event.target.disabled=true;
+            // AJAX 요청
+            $.ajax({
+                url: "${path}/post/postUpdateEnd.do",
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    alert("수정이 완료되었습니다.");
+                    location.href = `${path}/post/postdetail.do?postCode=${post.postCode}`;
+                    event.target.innerText='저장';
+        			event.target.disabled=true;
+                },
+                error: function (xhr, status, error) {
+                    console.error("수정 중 오류:", error);
+                    alert("수정 중 오류가 발생했습니다. 다시 시도해주세요.");
+                    event.target.innerText='저장';
+        			event.target.disabled=false;
+                },
+            });
+        });
+    });
+
+    function restoreFilesAndRedirect(postCode) {
+        // 파일 상태 복구 요청
+        $.get("${path}/post/postFileModification.do?postCode=" + postCode + "&flag=restore")
+            .done(data => {
+                if (data === "") {
+                    console.log("파일 상태가 'N'인 파일 복구 완료");
+                    location.href = `${path}/post/postdetail.do?postCode=${post.postCode}`;
+                } else {
+                    alert("파일 복구에 실패했습니다.");
+                }
+            })
+            .fail(() => {
+                alert("파일 복구 요청 중 오류가 발생했습니다.");
+            });
     }
 </script>
 

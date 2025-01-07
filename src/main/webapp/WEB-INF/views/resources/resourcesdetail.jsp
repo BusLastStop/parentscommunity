@@ -5,124 +5,138 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
 <style>
-	section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 700px;
-}
+    /* 전체 섹션 스타일 */
+    section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        background-color: #f9f9f9; /* 배경색 추가 */
+    }
 
-div#board-title {
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-}
+    /* 게시판 제목 스타일 */
+    div#board-title {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: white;
+        width: 80%;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
 
-div#board-title>h2 {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    div#board-title h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+    }
 
-div#board-title>.details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    width: 100%;
-}
+    div#board-title .details {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+    }
 
-div#board-title>.details>p {
-    margin: 0;
-}
+    /* 본문 컨테이너 스타일 */
+    div.board-container {
+        width: 80%;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
 
-div.board-container {
-    width: 80%;
-    min-height: 600px;
-    box-sizing: border-box;
-}
+    div#content {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+        white-space: pre-wrap; /* 줄바꿈 처리 */
+    }
 
-div.board-container #content {
-    padding: 10px;
-    margin: 0;
-    width: 100%;
-    min-height: 400px;
-    font-size: 18px;
-    font-family: "Nanum Gothic", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    box-sizing: border-box;
-}
+    /* 첨부파일 스타일 */
+    div.attachments {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f1f1f1;
+        border-radius: 8px;
+    }
 
-div.attachments {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-}
+    div.attachments h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: #444;
+    }
 
-div.attachments h3 {
-    margin: 0 0 10px;
-    font-size: 16px;
-}
+    div.attachments ul {
+        list-style: none;
+        padding: 0;
+    }
 
-div.attachments ul {
-    list-style: none;
-    padding: 0;
-}
+    div.attachments ul li a {
+        color: #007bff;
+        text-decoration: none;
+    }
 
-div.attachments ul li {
-    margin-bottom: 5px;
-}
+    div.attachments ul li a:hover {
+        text-decoration: underline;
+    }
 
-div.attachments ul li a {
-    text-decoration: none;
-    color: #007bff;
-    cursor: pointer;
-}
+    /* 버튼 스타일 */
+    #buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
 
-div.attachments ul li a:hover {
-    text-decoration: underline;
-}
+    button {
+        background-color: #90CAF9;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
 
-div#buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 10%;
-    margin-left: 10%;
-    width: 80%;
-    box-sizing: border-box;
-}
+    button:hover {
+        background-color: #64B5F6;
+    }
 
-div.left-side {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+    .report {
+        background-color: #ff9e80;
+    }
 
-button {
-    background-color: #bbdefb;
-    height: 30px;
-    border: 1px solid #ddd;
-    margin: 0 5px;
-}
+    .report:hover {
+        background-color: #ff7043;
+    }
 
-button.download {
-    background-color: #98d5ff;
-}
+    /* 북마크 스타일 */
+    .bookmark-container {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 16px;
+    }
 
-button.smtp {
-    background-color: #ffb6b6;
-}
+    .bookmark-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        background-image: url('${path}/resources/images/heart-empty.png');
+        background-size: cover;
+    }
 
-button.report {
-    background-color: #ff9e80;
-}
-	
+    .bookmark-icon.active {
+        background-image: url('${path}/resources/images/heart.png');
+    }
 </style>
+
 <section>
     <div id="board-title">
         <h2><c:out value="${resource.resTitle}" default="제목 없음" /></h2>
@@ -153,8 +167,8 @@ button.report {
                 <button class="smtp" onclick="openSMTP()">SMTP</button>
             </div>
             <div class="right-side">
-                <button class="report" onclick="alert('신고!')">신고</button>
-                <button onclick="location.href='${path}/resources/resourcesedit.do?resCode=${resource.resCode}'">수정</button>
+                <!-- <button class="report" onclick="alert('신고!')">신고</button> -->
+               <%--  <button onclick="location.href='${path}/resources/resourcesedit.do?resCode=${resource.resCode}'">수정</button> --%>
                 <button onclick="confirmDelete('${resource.resCode}')">삭제</button>
             </div>
         </div>

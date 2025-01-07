@@ -39,6 +39,7 @@ public class PostUpdateEndServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=UTF-8");
 
         PostService postService = new PostService();
         PostFileService postFileService = new PostFileService();
@@ -106,6 +107,11 @@ public class PostUpdateEndServlet extends HttpServlet {
             	String inputFileName = (String) fileNames.nextElement(); 
 	            String originalFileName = mr.getOriginalFileName(inputFileName);
 	            String renamedFileName = mr.getFilesystemName(inputFileName);
+	            
+	            System.out.println("Input File Name: " + inputFileName);
+	            System.out.println("Original File Name: " + originalFileName);
+	            System.out.println("Renamed File Name: " + renamedFileName);
+
             
             // 파일 DTO 생성 (파일이 있을 경우에만)
            

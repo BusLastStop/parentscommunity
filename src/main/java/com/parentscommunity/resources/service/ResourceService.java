@@ -74,4 +74,30 @@ public class ResourceService {
     	session.close();
     	return resource;
     }
+    
+ // 리소스 삭제
+    public boolean deleteResource(String resCode) {
+        SqlSession session = getSession();
+        boolean result = false;
+
+        try {
+            int rowsAffected = resourceDao.deleteResource(session, resCode); // 삭제된 행의 개수
+            if (rowsAffected > 0) {
+                session.commit(); // 삭제 성공 시 커밋
+                result = true;
+            } else {
+                session.rollback(); // 삭제 실패 시 롤백
+                throw new RuntimeException("리소스 삭제 실패. 삭제된 행이 없습니다. resCode: " + resCode);
+            }
+        } catch (Exception e) {
+            session.rollback(); // 예외 발생 시 롤백
+            e.printStackTrace();
+            throw new RuntimeException("리소스 삭제 중 오류 발생: " + e.getMessage(), e);
+        } finally {
+            session.close(); // 세션 닫기
+        }
+
+        return result;
+    }
+
 }

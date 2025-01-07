@@ -34,4 +34,9 @@ public class ResourcesDao {
    public Resources getResourceByCode(SqlSession session, String resCode) {
 	   return session.selectOne("resource.getResourceByCode", resCode);
    }
+   
+   //게시글 삭제
+   public int deleteResource(SqlSession session, String resCode) {
+	   return session.delete("resource.deleteResources", resCode);
+   }
 }

@@ -7,87 +7,159 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style>
-	/* 전체 섹션 스타일 */
-	section {
-	    display: flex;
-	    flex-direction: column;
-	    align-items: center;
-	    min-height: 700px;
-	    width: 100%;
-	}
-	
-	/* 게시글 목록 스타일 */
-	div#boardList {
-	    width: 80%; /* 게시글 목록 폭을 줄여 화면 가운데로 */
-	    margin: 0 auto;
-	    min-height: 400px;
-	}
-	
-	div#boardList>h2 {
-	    font-size: 24px;
-	    margin-bottom: 20px; /* 제목과 테이블 사이 간격 */
-	    text-align: center;
-	}
-	
-	/* 게시글 테이블 스타일 */
-	div#boardList>table {
-	    margin: auto;
-	    width: 100%; /* 테이블 폭을 부모 요소에 맞춤 */
-	    border-collapse: collapse;
-	    font-size: 16px;
-	    text-align: center;
-	    border: 1px solid #ddd; /* 테이블 테두리 추가 */
-	}
-	
-	table td {
-	    border: 1px solid #ddd;
-	    padding: 10px; /* 셀 내부 여백 */
-	}
-	
-	table .title {
-	    text-align: left; /* 제목은 왼쪽 정렬 */
-	    padding-left: 10px;
-	}
-	
-	table .category, table .nickname, table .date {
-	    width: 15%; /* 열 폭 비율 */
-	}
-	
-	table .readCount, table .commentCount {
-	    width: 10%; /* 조회수와 댓글수 열 폭 */
-	}
-	
-	/* 글쓰기/페이지네이션 영역 */
-	div.board-container {
-	    width: 80%; /* 영역 폭을 게시글 목록과 동일하게 설정 */
-	    margin-top: 20px;
-	    text-align: center;
-	    padding: 15px;
-	    border: 1px solid #ddd; /* 경계선 추가 */
-	    border-radius: 5px; /* 모서리 둥글게 */
-	}
-	
-	/* 글쓰기 버튼 스타일 */
-	div#write>button {
-	    background-color: #bbdefb;
-	    border: 1px solid #ddd;
-	    border-radius: 5px;
-	    padding: 10px 20px; /* 버튼 크기 조정 */
-	    font-size: 14px;
-	    cursor: pointer;
-	    width: 120px;
-	    height: 40px;
-	    margin-right: 10px; /* 버튼 간격 */
-	}
-	
-	/* 페이지네이션 스타일 */
-	#pagination {
-	    font-size: 14px;
-	    margin-top: 10px;
-	}
+    /* 전체 섹션 스타일 */
+    section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
 
-		
+    /* 게시판 리스트 스타일 */
+    div#boardList {
+        width: 80%;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    div#boardList > h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #333;
+    }
+
+    /* 테이블 스타일 */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+    }
+
+    thead {
+        background-color: #f1f1f1;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        font-weight: bold;
+        color: #555;
+    }
+
+    tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    tbody tr a {
+        text-decoration: none;
+        color: #007bff;
+    }
+
+    tbody tr a:hover {
+        text-decoration: underline;
+    }
+
+    /* 검색창 스타일 */
+    div#search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    div#search > input, div#search > select {
+        height: 35px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+        padding: 5px 10px;
+        font-size: 14px;
+        width: 250px;
+    }
+
+    div#search > button {
+        height: 35px;
+        background-color: #90CAF9;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    div#search > button:hover {
+        background-color: #64B5F6;
+    }
+
+    /* 글쓰기 버튼 스타일 */
+    div#write {
+        text-align: right;
+        margin: 20px 0;
+    }
+
+    div#write > button {
+        background-color: #0D47A1;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    div#write > button:hover {
+        background-color: #1565C0;
+    }
+
+    /* 페이지네이션 스타일 */
+    #pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    #pagination li {
+        list-style: none;
+        margin: 0 5px;
+    }
+
+    #pagination a {
+        text-decoration: none;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white;
+        color: #333;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    #pagination a:hover {
+        background-color: #90CAF9;
+        color: white;
+    }
+
+    #pagination .active {
+        background-color: #0D47A1;
+        color: white;
+        pointer-events: none;
+    }
 </style>
+
 
 <section>
 	<div id="boardList">
