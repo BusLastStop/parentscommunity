@@ -114,41 +114,26 @@ header, footer {
 <div class="write-container">
 	<h1>게시글 작성</h1>
 	<!-- file 입력 필드가 있을 때 enctype="multipart/form-data"를 지정하지 않으면 서버로 파일이 전송되지 않는다. -->
-	<form action="${path }/post/postwriteend.do" method="post" enctype="multipart/form-data">
-	
+	<form action="${path }/post/postwriteend.do" method="post" enctype="multipart/form-data"> 
+	<!-- <form id="postForm"> -->
 		<div class="form-group">
 			<label>제목</label>
 			<input type="text" id="title" name="title" maxlength="100" placeholder="제목을 입력하세요." required>
 		</div>
 		
-		<!-- <div class="form-group">
-			<label for="category">카테고리</label>
-			<select id="category" name="category" requried>
-				<option value ="" disabled select>카테고리를 선택하세요.</option>
-				<option value="CAT001">입시정보</option>
-                <option value="CAT002">학교생활</option>
-                <option value="CAT003">공부법</option>
-                <option value="CAT004">자녀 고민상담</option>
-                <option value="CAT005">자유</option>
-                <option value="CAT006">익명</option>
-                <option value="CAT007">홍보</option>
-			</select>
-		</div> 
-		-->
-		
 		<div class="form-group">
-	    <label for="category">카테고리</label>
-	    <select id="category" name="category" required>
-	        <option value="" disabled selected>카테고리를 선택하세요.</option>
-	        <option value="CAT001">입시정보</option>
-	        <option value="CAT002">학교생활</option>
-	        <option value="CAT003">공부법</option>
-	        <option value="CAT004">자녀 고민상담</option>
-	        <option value="CAT005">자유</option>
-	        <option value="CAT006">익명</option>
-	        <option value="CAT007">홍보</option>
-	    </select>
-</div>
+		    <label for="category">카테고리</label>
+		    <select id="category" name="category" required>
+		        <option value="" disabled selected>카테고리를 선택하세요.</option>
+		        <option value="CAT001">입시정보</option>
+		        <option value="CAT002">학교생활</option>
+		        <option value="CAT003">공부법</option>
+		        <option value="CAT004">자녀 고민상담</option>
+		        <option value="CAT005">자유</option>
+		        <option value="CAT006">익명</option>
+		        <option value="CAT007">홍보</option>
+		    </select>
+	</div>
 		
 		
 		<div class="form-group">
@@ -157,15 +142,66 @@ header, footer {
 		</div>
 		
 		 <div class="form-group">
-	        <label for="file">첨부파일</label>
-	        <input type="file" id="fisle" name="files[]" multiple>
+	        <label for="fileInput">첨부파일</label>
+	       	<input type="file" id="fileInput" name="file" multiple>
+            <ul id="fileList"></ul>
     	</div>
   
 		
 		<div class="form-actions">
-			<button type="submit" id="submitBtn class="btn-submit">등록</button>
+			<button type="button" id="submitBtn" class="btn-submit">등록</button>
 		</div>
 	</form>	
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    const fileList = []; // 업로드할 파일 리스트
+    const path = '${path}'; // 서버 경로
 
+    // 파일 선택 시 파일 목록에 추가
+    $('#fileInput').on('change', function(event) {
+        const files = event.target.files;
+
+        // 파일 리스트 업데이트
+        for (const file of files) {
+            fileList.push(file);
+            $('#fileList').append(`<li>\${file.name}</li>`);
+        }
+        console.log('업로드할 파일 목록:', fileList);
+    });
+
+    // 폼 제출 이벤트
+    $('#submitBtn').on('click', function() {
+        const formData = new FormData();
+
+        // 폼 데이터 추가
+        formData.append('title', $('#title').val());
+        formData.append('category', $('#category').val());
+        formData.append('content', $('#content').val());
+
+        // 파일 데이터 추가
+        fileList.forEach((file, index) => {
+            formData.append('file' + index, file); 
+        });
+
+        // AJAX 요청
+        $.ajax({
+            url: path + '/post/postwriteend.do',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('게시글이 성공적으로 등록되었습니다!');
+                window.location.href = path + '/post/postlist.do'; // 성공 시 게시글 목록 페이지로 이동
+            },
+            error: function(xhr, status, error) {
+                console.error('오류:', error);
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
+    });
+});
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

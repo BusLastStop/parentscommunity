@@ -19,7 +19,7 @@ public class PostService {
     private PostFileDao postFileDao = new PostFileDao();
 
     // 게시글과 파일을 한 트랜잭션에서 처리
-    public String insertPostWithFile(Post post, PostFile postFile) {
+    public String insertPostWithFile(Post post, List<PostFile> postFiles) {
         SqlSession session = getSession();
         String postCode = null;
 
@@ -33,9 +33,11 @@ public class PostService {
             }
 
             // 파일 저장
-            if (postFile != null && postCode != null) {
-                postFile.setPostCode(postCode);
-                postFileDao.insertPostFile(session, postFile);
+            if (postFiles != null && !postFiles.isEmpty() && postCode != null) {
+            	for(PostFile postFile : postFiles) {
+            		postFile.setPostCode(postCode);
+            		postFileDao.insertPostFile(session, postFile);
+            	} 
             }
 
             session.commit(); // 전체 트랜잭션 커밋
@@ -58,10 +60,10 @@ public class PostService {
 		return result; 
 		}
 
-    
-    public int selectPostCount() {
+    //게시판페이지네이션 하기 위해 필요한 카운트
+    public int selectPostCount(Map<String, Object> param) {
 		SqlSession session = getSession();
-		int count = postDao.selectPostCount(session);
+		int count = postDao.selectPostCount(session, param);
 		session.close();
 		return count;
 	}

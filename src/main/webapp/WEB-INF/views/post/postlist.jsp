@@ -3,63 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
-<!-- <style>
-	section{ display:flex;flex-direction:column;align-items:center;min-height:700px; }
-	div#boardList{ width:80%;min-height:600px;}
-	div#boardList>h2{ display:inline-block;margin:10px 0 10px 10%; }
-	div#boardList>table{ margin:auto;width:80%; }
-	div#boardList>#board-category{ height:25px;margin:0 0 10px 10%; }
-	table .category{ width:10%;text-align:center; }
-	table .title{ width:auto;padding-left:5px; }
-	table .nickname{ width:10%;padding-left:5px; }
-	table .date{ width:10%;padding-left:5px; }
-	table .readCount{ width:5%;text-align:center; }
-	table .commentCount{ width:5%;text-align:center; }
-	div.board-container{ width:80%; }
-	div#write{ text-align:right; }
-	div#write>button{ margin:3px 10% 3px 3px;width:70px;height:25px; }
-	div#search{ display:flex;justify-content:center;align-items:center; }
-	div#search>input{ width:40%;height:25px;margin:3px; }
-	div#search>button{ width:50px; }
-	div#search>select{ height:25px; }
-	#pagination{ height:25px; }
-	p{ margin:0;text-align:center; }
-	button{ background-color:#bbdefb;height:25px; }
-	/*페이지바*/
-	#pagination {
-    display: flex; /* 가로 정렬 */
-    justify-content: center; /* 가운데 정렬 */
-    align-items: center;
-    list-style: none; /* 불필요한 리스트 스타일 제거 */
-    padding: 0;
-    margin-top: 10px;
-}
-
-#pagination li {
-    margin: 0 5px; /* 각 페이지 간격 */
-}
-
-#pagination a {
-    text-decoration: none;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-    color: #333;
-    transition: background-color 0.3s;
-}
-
-#pagination a:hover {
-    background-color: #64b5f6;
-    color: white;
-}
-
-#pagination .active {
-    background-color: #0066ff;
-    color: white;
-    pointer-events: none; /* 클릭 비활성화 */
-}
-</style> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <style>
     /* 전체 섹션 스타일 */
@@ -275,10 +220,36 @@
 			</c:if>
 		</div>
 		
-		<!-- 페이지네이션 -->
-		 <div id="pagination">
-            ${pageBar}
-        </div>
+		<p id="pagination">
+		<nav aria-label="Page navigation example">
+		  <ul class="pagination justify-content-center">
+		    <!-- 이전 페이지 버튼 -->
+		    <c:if test="${currentPage > 1}">
+		      <li class="page-item">
+		        <a class="page-link" href="${path}/post/postlist.do?cPage=${currentPage - 1}" aria-label="Previous">
+		          <span aria-hidden="true">&laquo;</span>
+		        </a>
+		      </li>
+		    </c:if>
+		    
+		    <!-- 페이지 번호 -->
+		    <c:forEach begin="1" end="${totalPages}" var="pageNo">
+		      <li class="page-item ${pageNo == currentPage ? 'active' : ''}">
+		        <a class="page-link" href="${path}/post/postlist.do?cPage=${pageNo}">${pageNo}</a>
+		      </li>
+		    </c:forEach>
+		    
+		    <!-- 다음 페이지 버튼 -->
+		    <c:if test="${currentPage < totalPages}">
+		      <li class="page-item">
+		        <a class="page-link" href="${path}/post/postlist.do?cPage=${currentPage + 1}" aria-label="Next">
+		          <span aria-hidden="true">&raquo;</span>
+		        </a>
+		      </li>
+		    </c:if>
+		  </ul>
+		</nav>
+		</p>
 
 		
 	</div>

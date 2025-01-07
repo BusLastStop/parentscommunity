@@ -8,67 +8,71 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <style>
+    /* 전체 섹션 스타일 */
     section {
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 700px;
-    }
-	
-	    div#board-title {
-	    border: 1px solid #ddd;
-	    box-sizing: border-box;
-	}
-	   
-		div#board-title>h2 {
-	    width: 100%;
-	    margin: 0;
-	    padding: 0;
-	    box-sizing: border-box;
-	}
-	
-    div#board-title>.details {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        width: 100%;
+        padding: 20px 0;
+        background-color: #f9f9f9; /* 배경색 추가 */
     }
 
-    div#board-title>.details>p {
+    /* 게시판 제목 스타일 */
+    div#board-title {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: white;
+        width: 80%;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    div#board-title h2 {
         margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
     }
 
+    div#board-title .details {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* 본문 컨테이너 스타일 */
     div.board-container {
         width: 80%;
-        min-height: 600px;
-        box-sizing: border-box;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
     }
 
-    div.board-container #content {
-        padding: 10px;
-        margin: 0;
-        width: 100%;
-        min-height: 400px;
-        font-size: 18px;
-        font-family: "Nanum Gothic", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-        box-sizing: border-box;
+    div#content {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+        white-space: pre-wrap; /* 줄바꿈 처리 */
     }
 
+    /* 첨부파일 스타일 */
     div.attachments {
         margin-top: 20px;
         padding: 10px;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        width: 100%;
-        box-sizing: border-box;
+        background-color: #f1f1f1;
+        border-radius: 8px;
     }
 
     div.attachments h3 {
-        margin: 0 0 10px;
         font-size: 16px;
+        margin-bottom: 10px;
+        color: #444;
     }
 
     div.attachments ul {
@@ -76,105 +80,121 @@
         padding: 0;
     }
 
-    div.attachments ul li {
-        margin-bottom: 5px;
-    }
-
     div.attachments ul li a {
-        text-decoration: none;
         color: #007bff;
-        cursor: pointer;
+        text-decoration: none;
     }
 
     div.attachments ul li a:hover {
         text-decoration: underline;
     }
 
-    div#buttons {
+    /* 버튼 스타일 */
+    #buttons {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-right: 10%;
-        margin-left: 10%;
-        width: 80%;
-        box-sizing: border-box;
+        margin-top: 20px;
     }
-    
-    div.left-side {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-	}
 
     button {
-        background-color: #bbdefb;
-        height: 30px;
-        border: 1px solid #ddd;
-        margin: 0 5px;
+        background-color: #90CAF9;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
 
-    button.report {
+    button:hover {
+        background-color: #64B5F6;
+    }
+
+    .report {
         background-color: #ff9e80;
     }
 
+    .report:hover {
+        background-color: #ff7043;
+    }
+
+    /* 북마크 스타일 */
     .bookmark-container {
         display: flex;
         align-items: center;
-        margin-left: 10px;
         cursor: pointer;
         font-size: 16px;
-        color: #000;
     }
 
     .bookmark-icon {
         width: 20px;
         height: 20px;
         margin-right: 5px;
-        background-image: url('${pageContext.request.contextPath}/resources/images/heart-empty.png');
+        background-image: url('${path}/resources/images/heart-empty.png');
         background-size: cover;
-        background-repeat: no-repeat;
     }
 
     .bookmark-icon.active {
-        background-image: url('${pageContext.request.contextPath}/resources/images/heart.png');
+        background-image: url('${path}/resources/images/heart.png');
     }
 
-    #bookmarkText {
-        font-weight: bold;
+    /* 댓글 섹션 스타일 */
+    #comment-container {
+        width: 80%;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
+
+    .comment-editor textarea {
+        width: 100%;
+        height: 60px;
+        resize: none; /* 크기 조절 비활성화 */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .comment-editor button {
+        margin-top: 10px;
+        float: right;
+        background-color: #0D47A1;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .comment-editor button:hover {
+        background-color: #1565C0;
+    }
+
     table#tbl-comment {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-}
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
-	table#tbl-comment tr td {
-	    border-bottom: 1px solid #ddd;
-	    padding: 10px;
-	    text-align: left;
-	}
-	
-	table#tbl-comment tr td:first-of-type {
-	    padding-left: 20px;
-	}
-	
-	table#tbl-comment tr.level2 td:first-of-type {
-	    padding-left: 40px; /* 답글은 들여쓰기 */
-	}
-	
-	table#tbl-comment tr:hover {
-	    background: #f9f9f9;
-	}
-	
-	table#tbl-comment button.btn-insert2 {
-	    display: none;
-	}
-	
-	table#tbl-comment tr:hover button.btn-insert2 {
-	    display: inline-block;
-	}
-    
+    table#tbl-comment td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table#tbl-comment tr.level2 td:first-child {
+        padding-left: 40px; /* 답글 들여쓰기 */
+    }
+
+    table#tbl-comment tr:hover {
+        background-color: #f9f9f9;
+    }
 </style>
+
 <section>
     <div id="board-title">
     <h2>${post.postTitle}</h2>

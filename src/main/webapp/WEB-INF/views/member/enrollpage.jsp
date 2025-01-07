@@ -127,7 +127,8 @@
 
             <p>비밀번호</p>
             <input type="password" name="password" id="password" class="password" required>
-
+			<span id="password-validation-message" class="error-message"></span>
+			
             <p>비밀번호 확인</p>
             <input type="password" name="confirmPassword" id="confirmPassword" class="confirmPassword" required>
             <span id="password-message" class="error-message"></span>
@@ -267,6 +268,23 @@
             }
         });
     }
+    
+    document.getElementById('password').addEventListener('input', function () {
+        const password = this.value;
+        const message = document.getElementById('password-validation-message');
+
+        // 비밀번호 유효성 검사 정규식
+        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+        if (!regex.test(password)) {
+            message.textContent = '비밀번호는 최소 8자 이상, 영문 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.';
+            message.className = 'error-message'; // 에러 메시지 스타일
+        } else {
+            message.textContent = '유효한 비밀번호입니다.';
+            message.className = 'success-message'; // 성공 메시지 스타일
+        }
+    });
+
 
    //const xhr=new XMLHttpRequest();
  

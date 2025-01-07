@@ -2,6 +2,9 @@ package com.parentscommunity.post.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,9 +66,9 @@ public class PostWriteEndServlet extends HttpServlet {
 	                throw new RuntimeException("로그인 정보가 없습니다. 게시글 등록은 로그인 후에 가능합니다.");
 	            }
 
-	            // 파일 데이터 처리
-	            String originalFileName = mr.getOriginalFileName("file");
-	            String renamedFileName = mr.getFilesystemName("file");
+//	            // 파일 데이터 처리
+//	            String originalFileName = mr.getOriginalFileName("file");
+//	            String renamedFileName = mr.getFilesystemName("file");
 
 	            // 게시글 DTO 생성
 	            Post post = Post.builder()
@@ -77,17 +80,42 @@ public class PostWriteEndServlet extends HttpServlet {
 	                    .build();
 
 	            // 파일 DTO 생성 (파일이 있을 경우에만)
-	            PostFile postFile = null;
-	            if (originalFileName != null && renamedFileName != null) {
-	                postFile = PostFile.builder()
-	                        .originalFileName(originalFileName)
-	                        .renamedFileName(renamedFileName)
-	                        .build();
+//	            PostFile postFile = null;
+//	            if (originalFileName != null && renamedFileName != null) {
+//	                postFile = PostFile.builder()
+//	                        .originalFileName(originalFileName)
+//	                        .renamedFileName(renamedFileName)
+//	                        .build();
+//	            }
+	         // 파일 처리
+	            Enumeration<String> fileNames = mr.getFileNames();
+	            List<PostFile> postFiles = new ArrayList<>();
+	            while (fileNames.hasMoreElements()) {
+	                String fileParamName = fileNames.nextElement();
+	                String originalFileName = mr.getOriginalFileName(fileParamName);
+	                String renamedFileName = mr.getFilesystemName(fileParamName);
+
+	                System.out.println("Param Name: " + fileParamName);
+	                System.out.println("Original File Name: " + originalFileName);
+	                System.out.println("Saved File Name: " + renamedFileName);
+
+	                if (originalFileName != null && renamedFileName != null) {
+	                    // 중복 방지 로직 추가
+	                    boolean isDuplicate = postFiles.stream()
+	                        .anyMatch(file -> file.getOriginalFileName().equals(originalFileName));
+
+	                    if (!isDuplicate) {
+	                        postFiles.add(PostFile.builder()
+	                            .originalFileName(originalFileName)
+	                            .renamedFileName(renamedFileName)
+	                            .build());
+	                    }
+	                }
 	            }
 
 	            // 서비스 호출
 	            PostService postService = new PostService();
-	            String postCode = postService.insertPostWithFile(post, postFile);
+	            String postCode = postService.insertPostWithFile(post, postFiles);
 
 	            if (postCode != null) {
 	                System.out.println("게시글 등록 성공. 게시글 코드: " + postCode);
