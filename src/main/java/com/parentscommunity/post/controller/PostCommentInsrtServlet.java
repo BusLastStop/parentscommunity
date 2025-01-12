@@ -37,11 +37,11 @@ public class PostCommentInsrtServlet extends HttpServlet {
 	            String postCode = request.getParameter("postCode"); // 게시글 코드
 	            String userCode = (String) request.getSession().getAttribute("userCode"); // 사용자 코드
 	            String parentComCode = request.getParameter("parentComCode"); // 부모 댓글 코드
-	            
-	            System.out.println("content: " + content);
-	            System.out.println("postCode: " + postCode);
-	            System.out.println("userCode: " + userCode);
-	            System.out.println("parentComCode: " + parentComCode);
+//	            
+//	            System.out.println("content: " + content);
+//	            System.out.println("postCode: " + postCode);
+//	            System.out.println("userCode: " + userCode);
+//	            System.out.println("parentComCode: " + parentComCode);
 
 	            // 2. PostComment DTO 객체 생성
 	            PostComment comment = PostComment.builder()

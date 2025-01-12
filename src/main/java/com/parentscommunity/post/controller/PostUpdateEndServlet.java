@@ -56,18 +56,6 @@ public class PostUpdateEndServlet extends HttpServlet {
         	 String postCode = request.getParameter("postCode");
         	 String postFileCode = request.getParameter("postFileCode"); 
         	 
-//        	 if (isCancelled) {
-//                 // 취소 요청 처리: 파일 상태 복구
-//                 boolean isRestored = postFileService.updateFilesStatus(postCode,postFileCode,"N", "Y");
-//                 if (isRestored) {
-//                     System.out.println("파일 상태 복구 완료: N -> Y");
-//                 } else {
-//                     System.out.println("파일 상태 복구 실패");
-//                 }
-//                 response.sendRedirect(request.getContextPath() + "/post/postdetail.do?postCode=" + postCode);
-//                 return;
-//             }
-        	 
         	MultipartRequest mr = new MultipartRequest(
                     request, path, 1024 * 1024 * 100, "UTF-8", new DefaultFileRenamePolicy()
                 );
@@ -78,10 +66,10 @@ public class PostUpdateEndServlet extends HttpServlet {
             String postCategory = mr.getParameter("category");
             String postContent = mr.getParameter("content");
             
-            System.out.println("postCode: " + postCode);
-            System.out.println("title: " + postTitle);
-            System.out.println("category: " + postCategory);
-            System.out.println("content: " + postContent);
+//            System.out.println("postCode: " + postCode);
+//            System.out.println("title: " + postTitle);
+//            System.out.println("category: " + postCategory);
+//            System.out.println("content: " + postContent);
 
 
             if (postCode == null || postTitle == null || postCategory == null || postContent == null) {

@@ -12,9 +12,9 @@ import com.parentscommunity.post.dto.PostComment;
 
 public class PostDao {
 	public int insertPost(SqlSession session, Post post) {
-		System.out.println("삽입할 Post 데이터: " + post); // 삽입 데이터 확인
+//		System.out.println("삽입할 Post 데이터: " + post); // 삽입 데이터 확인
 	    int result = session.insert("post.insertPost", post);
-	    System.out.println("Post 삽입 결과: " + result); // 영향을 받은 행 수 확인
+//	    System.out.println("Post 삽입 결과: " + result); // 영향을 받은 행 수 확인
 	    return result;
     }
 	

@@ -15,6 +15,7 @@ public class Resources {
     private String resTitle; // 제목
     private String resContent; // 설명
     private String resDateTime; // 업로드 날짜
+    private String resViews;
     private String userCode; // 사용자 코드 (FK)
     private String cateCode; // 카테고리 코드 (FK)
     

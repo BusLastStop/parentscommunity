@@ -81,9 +81,9 @@ public class ResourceWriteEndServlet extends HttpServlet {
                 String originalFileName = mr.getOriginalFileName(fileParamName);
                 String renamedFileName = mr.getFilesystemName(fileParamName);
                 
-                System.out.println("Param Name: " + fileParamName);
-                System.out.println("Original File Name: " + originalFileName);
-                System.out.println("Saved File Name: " + renamedFileName);
+//                System.out.println("Param Name: " + fileParamName);
+//                System.out.println("Original File Name: " + originalFileName);
+//                System.out.println("Saved File Name: " + renamedFileName);
 
                 if (originalFileName != null && renamedFileName != null) {
 //                	 resourceFiles.add(ResourcesFile.builder()

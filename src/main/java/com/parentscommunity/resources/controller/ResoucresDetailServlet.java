@@ -34,7 +34,7 @@ public class ResoucresDetailServlet extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String resCode = request.getParameter("resCode");
-        System.out.println("Requested Resource Code: " + resCode);
+//        System.out.println("Requested Resource Code: " + resCode);
 
         // 서비스 호출
         ResourceService resourceService = new ResourceService();

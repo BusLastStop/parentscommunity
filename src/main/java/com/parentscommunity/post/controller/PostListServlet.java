@@ -48,22 +48,6 @@ public class PostListServlet extends HttpServlet {
         }
 
         int numPerPage = 5; // 한 페이지에 표시할 글 수
-	    
-//		// 현재 페이지와 페이지당 게시글 수 가져오기
-//        int cPage, numPerPage;
-//        try {
-//            cPage = Integer.parseInt(request.getParameter("cPage"));
-//        } catch (NumberFormatException e) {
-//            cPage = 1;
-//        }
-//
-//        try {
-//            numPerPage = Integer.parseInt(request.getParameter("numPerPage"));
-//        } catch (NumberFormatException e) {
-//            numPerPage = 5; // 기본값 설정
-//        }
-        
-
         // 서비스 호출
         PostService postService = new PostService();
 
@@ -103,63 +87,6 @@ public class PostListServlet extends HttpServlet {
         
         //Math.ceil()은 소수점을 올림하여 정수로 맞추는 데 사용
         int totalPage = (int) Math.ceil((double) totalData / numPerPage);
-//        int pageBarSize = 5;
-//        int pageNo = ((cPage - 1) / pageBarSize) * pageBarSize + 1;
-//        int pageEnd = pageNo + pageBarSize - 1;
-
-        // 페이지 바 생성
-//        StringBuilder pageBar = new StringBuilder("<ul class='pagination justify-content-center'>");
-//
-//        // 이전 버튼
-//        if (pageNo == 1) {
-//            pageBar.append("<li class='page-item disabled'><a class='page-link' href='#'>이전</a></li>");
-//        } else {
-//            pageBar.append("<li class='page-item'><a class='page-link' href='")
-//                   .append(request.getRequestURI())
-//                   .append("?cPage=")
-//                   .append(pageNo - 1)
-//                   .append("&numPerPage=")
-//                   .append(numPerPage)
-//                   .append("'>이전</a></li>");
-//        }
-//
-//        // 페이지 번호
-//        while (!(pageNo > pageEnd || pageNo > totalPage)) {
-//            if (pageNo == cPage) {
-//                pageBar.append("<li class='page-item disabled'><a class='page-link' href='#'>")
-//                       .append(pageNo)
-//                       .append("</a></li>");
-//            } else {
-//                pageBar.append("<li class='page-item'><a class='page-link' href='")
-//                       .append(request.getRequestURI())
-//                       .append("?cPage=")
-//                       .append(pageNo)
-//                       .append("&numPerPage=")
-//                       .append(numPerPage)
-//                       .append("'>")
-//                       .append(pageNo)
-//                       .append("</a></li>");
-//            }
-//            pageNo++;
-//        }
-//
-//        // 다음 버튼
-//        if (pageNo > totalPage) {
-//            pageBar.append("<li class='page-item disabled'><a class='page-link' href='#'>다음</a></li>");
-//        } else {
-//            pageBar.append("<li class='page-item'><a class='page-link' href='")
-//                   .append(request.getRequestURI())
-//                   .append("?cPage=")
-//                   .append(pageNo)
-//                   .append("&numPerPage=")
-//                   .append(numPerPage)
-//                   .append("'>다음</a></li>");
-//        }
-//        pageBar.append("</ul>");
-        
-        //디버깅
-//        System.out.println("Post List: " + postList);
-
 
         // 데이터 및 페이지 바 설정
         request.setAttribute("postList", postList);

@@ -9,9 +9,9 @@ import com.parentscommunity.post.dto.PostFile;
 
 public class PostFileDao {
 	public int insertPostFile(SqlSession session, PostFile postFile) {
-		System.out.println("삽입할 PostFile 데이터: " + postFile); // 삽입 데이터 확인
+//		System.out.println("삽입할 PostFile 데이터: " + postFile); // 삽입 데이터 확인
 	    int result = session.insert("postFileMapper.insertPostFile", postFile);
-	    System.out.println("PostFile 삽입 결과: " + result); // 영향을 받은 행 수 확인
+//	    System.out.println("PostFile 삽입 결과: " + result); // 영향을 받은 행 수 확인
 	    return result;
     }
 	

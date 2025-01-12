@@ -49,14 +49,7 @@ public class PostFileModificationServlet extends HttpServlet {
                 } else {
                     response.getWriter().write("error"); // 실패
                 }
-//            } else if ("delete".equals(flag)) {
-//                // 파일 상태가 'N'인 파일 삭제
-//                boolean isDeleted = postFileService.deleteFilesWithStatus("N");
-//                if (isDeleted) {
-//                    response.getWriter().write(""); // 성공
-//                } else {
-//                    response.getWriter().write("error"); // 실패
-//                }
+
 
             } else if ("restore".equals(flag)) {
                 // 파일 상태가 'N'인 파일을 'Y'로 복구

@@ -36,7 +36,7 @@ public class ResourceService {
 	                int fileResult = resourcefileDao.insertResourceFile(session, resourceFile);
 	                
 	             // 파일 저장 성공 여부 확인
-	                System.out.println("파일 저장 결과: " + fileResult + ", 파일 이름: " + resourceFile.getOriginalResName());
+//	                System.out.println("파일 저장 결과: " + fileResult + ", 파일 이름: " + resourceFile.getOriginalResName());
 	            }
 	        }
 			session.commit();
@@ -70,7 +70,7 @@ public class ResourceService {
     	SqlSession session = getSession();
     	Resources resource = null;
     	resource = resourceDao.getResourceByCode(session, resCode);
-    	System.out.println("Fetched Resource: " + resource);
+//    	System.out.println("Fetched Resource: " + resource);
     	session.close();
     	return resource;
     }
